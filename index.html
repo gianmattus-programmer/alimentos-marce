@@ -90,6 +90,7 @@
         @media (max-width: 768px) {
             .parallax-bg {
                 background-attachment: scroll;
+                overflow: hidden;
             }
         }
 
@@ -103,6 +104,8 @@
             background-size: cover;
             background-position: center;
             will-change: transform;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Overlay Gradiente */
@@ -842,41 +845,49 @@
             const isMobile = window.innerWidth <= 768;
             if (isMobile) {
                 const parallaxElements = document.querySelectorAll('.parallax-bg');
+                const parallaxLayers = new Map();
                 
                 parallaxElements.forEach(element => {
-                    // Agregar capa parallax
+                    // Crear capa parallax
                     const layer = document.createElement('div');
                     layer.className = 'parallax-layer';
                     const bgImage = element.style.backgroundImage;
-                    layer.style.backgroundImage = bgImage;
-                    element.style.backgroundImage = 'none';
-                    element.insertBefore(layer, element.firstChild);
-                    
-                    // Observer para parallax suave
-                    const parallaxObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const handleParallax = () => {
-                                    const scrollPos = window.scrollY;
-                                    const elementTop = element.getBoundingClientRect().top + scrollPos;
-                                    const elementHeight = element.offsetHeight;
-                                    const windowHeight = window.innerHeight;
-                                    
-                                    // Calcular offset basado en scroll
-                                    if (scrollPos + windowHeight > elementTop && scrollPos < elementTop + elementHeight) {
-                                        const yPos = (scrollPos - elementTop + windowHeight) * 0.15; // Ajustar velocidad (0.15)
-                                        layer.style.transform = `translateY(${yPos}px)`;
-                                    }
-                                };
-                                
-                                window.addEventListener('scroll', handleParallax, { passive: true });
-                                handleParallax(); // Ejecutar una vez al inicio
-                            }
-                        });
-                    }, { threshold: 0 });
-                    
-                    parallaxObserver.observe(element);
+                    if (bgImage) {
+                        layer.style.backgroundImage = bgImage;
+                        element.style.backgroundImage = 'none';
+                    }
+                    element.appendChild(layer);
+                    parallaxLayers.set(element, layer);
                 });
+                
+                // Throttle function para scroll
+                let ticking = false;
+                const handleParallaxScroll = () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            parallaxElements.forEach(element => {
+                                const layer = parallaxLayers.get(element);
+                                if (!layer) return;
+                                
+                                const scrollPos = window.scrollY;
+                                const rect = element.getBoundingClientRect();
+                                const elementTop = rect.top + scrollPos;
+                                const elementHeight = element.offsetHeight;
+                                const windowHeight = window.innerHeight;
+                                
+                                // Solo actualizar si está visible
+                                if (scrollPos + windowHeight > elementTop && scrollPos < elementTop + elementHeight) {
+                                    const offset = (scrollPos - elementTop) * 0.3;
+                                    layer.style.transform = `translateY(${offset}px)`;
+                                }
+                            });
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                };
+                
+                window.addEventListener('scroll', handleParallaxScroll, { passive: true });
             }
         });
     </script>
