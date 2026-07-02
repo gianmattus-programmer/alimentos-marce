@@ -83,13 +83,26 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            position: relative;
         }
 
-        /* Parallax en Mobile (deshabilitado) */
+        /* Parallax en Mobile (usa JavaScript en su lugar) */
         @media (max-width: 768px) {
             .parallax-bg {
                 background-attachment: scroll;
             }
+        }
+
+        /* Capa parallax para móvil */
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
         }
 
         /* Overlay Gradiente */
@@ -824,6 +837,47 @@
                     setTimeout(() => status.classList.add('hidden'), 5000);
                 }, 1500);
             });
+
+            // 8. Parallax en Mobile con JavaScript
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                const parallaxElements = document.querySelectorAll('.parallax-bg');
+                
+                parallaxElements.forEach(element => {
+                    // Agregar capa parallax
+                    const layer = document.createElement('div');
+                    layer.className = 'parallax-layer';
+                    const bgImage = element.style.backgroundImage;
+                    layer.style.backgroundImage = bgImage;
+                    element.style.backgroundImage = 'none';
+                    element.insertBefore(layer, element.firstChild);
+                    
+                    // Observer para parallax suave
+                    const parallaxObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const handleParallax = () => {
+                                    const scrollPos = window.scrollY;
+                                    const elementTop = element.getBoundingClientRect().top + scrollPos;
+                                    const elementHeight = element.offsetHeight;
+                                    const windowHeight = window.innerHeight;
+                                    
+                                    // Calcular offset basado en scroll
+                                    if (scrollPos + windowHeight > elementTop && scrollPos < elementTop + elementHeight) {
+                                        const yPos = (scrollPos - elementTop + windowHeight) * 0.15; // Ajustar velocidad (0.15)
+                                        layer.style.transform = `translateY(${yPos}px)`;
+                                    }
+                                };
+                                
+                                window.addEventListener('scroll', handleParallax, { passive: true });
+                                handleParallax(); // Ejecutar una vez al inicio
+                            }
+                        });
+                    }, { threshold: 0 });
+                    
+                    parallaxObserver.observe(element);
+                });
+            }
         });
     </script>
 </body>
