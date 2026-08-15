@@ -1,0 +1,9 @@
+ALIMENTOS MARCE - INDICACIONES DE PUBLICACIÓN
+
+1. Publica todos los archivos de esta carpeta conservando sus nombres.
+2. El formulario de propuestas y el Libro de Reclamaciones envían los registros a ventas@alimentosmarce.com.
+3. En el primer envío, FormSubmit enviará un correo de activación a ventas@alimentosmarce.com. Abre ese correo, confirma el formulario y luego realiza un segundo envío de prueba. Este paso se hace una sola vez por dirección y es necesario para habilitar la recepción. La prueba definitiva debe realizarse después de activar el correo, porque los archivos adjuntos del primer envío no se conservan.
+4. Comprueba también la carpeta de correo no deseado durante la activación.
+5. Después de activarlo, verifica un envío desde la página publicada tanto en computadora como en celular.
+
+La página muestra un mensaje claro de éxito o error. El Libro de Reclamaciones permite dibujar la firma o cargar una imagen, asigna un número de registro, genera un PDF completo, lo adjunta al correo recibido por Alimentos Marce, remite una copia al correo indicado por el consumidor y permite descargar o imprimir la constancia.

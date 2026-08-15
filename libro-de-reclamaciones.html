@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Libro de Reclamaciones Virtual | Alimentos Marce</title>
+  <meta name="description" content="Hoja de Reclamación Virtual de Alimentos Marce S.A.C.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://alimentosmarce.com/libro-de-reclamaciones.html">
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="legal.css">
+</head>
+<body class="book-page">
+  <a class="skip-link" href="#contenido">Saltar al formulario</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html#inicio" aria-label="Alimentos Marce - Inicio"><img src="logo.png" alt="Alimentos Marce"></a>
+      <a class="back-home" href="index.html"><i class="fas fa-arrow-left" aria-hidden="true"></i><span>Volver al inicio</span></a>
+      <a class="header-cta" href="https://wa.me/51931515526" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i><span>¿Necesitas ayuda?</span></a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="legal-hero book-hero">
+      <div class="container">
+        <p class="eyebrow">Atención al consumidor</p>
+        <h1>Libro de Reclamaciones Virtual</h1>
+        <p class="lead">Registra aquí tu reclamo o queja. Al finalizar recibirás un número de registro y podrás guardar una copia de tu Hoja de Reclamación.</p>
+      </div>
+    </section>
+
+    <div class="container book-shell">
+      <p class="sheet-mobile-note"><i class="fas fa-mobile-screen-button" aria-hidden="true"></i> El formulario se adapta a tu pantalla. Completa cada sección y firma con el dedo o subiendo una imagen.</p>
+
+      <form id="claimForm" class="claim-form" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" hidden aria-hidden="true">
+        <input type="hidden" id="claimDateHidden" name="Fecha">
+        <input type="hidden" id="claimIdHidden" name="Número de Hoja de Reclamación">
+
+        <div class="sheet-scroll">
+          <section class="complaint-sheet" aria-label="Hoja de Reclamación Virtual">
+            <div class="sheet-heading-row">
+              <div class="sheet-main-heading">LIBRO DE RECLAMACIONES</div>
+              <div class="sheet-side-heading">HOJA DE RECLAMACIÓN</div>
+            </div>
+
+            <div class="sheet-date-row">
+              <label class="sheet-inline-field sheet-date-field" for="claimDateDisplay"><span>FECHA:</span><input id="claimDateDisplay" type="text" readonly aria-label="Fecha de la reclamación"></label>
+              <div class="sheet-number-field"><strong>N°</strong><output id="claimIdDisplay">Se genera al enviar</output></div>
+            </div>
+
+            <div class="sheet-provider">
+              <p><strong>PROVEEDOR:</strong> ALIMENTOS MARCE S.A.C.</p>
+              <p><strong>RUC:</strong> 20610853227</p>
+              <p><strong>DOMICILIO:</strong> ASOC. NUEVA VICTORIA MZ A LT 08</p>
+            </div>
+
+            <div class="sheet-section-title">1. IDENTIFICACIÓN DEL CONSUMIDOR RECLAMANTE</div>
+            <label class="sheet-wide-field" for="fullName"><span>NOMBRE: <b>*</b></span><input id="fullName" name="Nombre del consumidor" type="text" autocomplete="name" required></label>
+            <div class="sheet-wide-field sheet-document-field"><span>DNI / CE: <b>*</b></span><select id="documentType" name="Tipo de documento" required aria-label="Tipo de documento"><option value="" disabled selected>Tipo</option><option>DNI</option><option>CE</option><option>Pasaporte</option></select><input id="documentNumber" name="Número de documento" type="text" inputmode="numeric" autocomplete="off" maxlength="15" required aria-label="Número de documento"></div>
+            <label class="sheet-wide-field" for="address"><span>DOMICILIO: <b>*</b></span><input id="address" name="Domicilio" type="text" autocomplete="street-address" required></label>
+            <div class="sheet-contact-row">
+              <label class="sheet-inline-field" for="phone"><span>TELÉFONO: <b>*</b></span><input id="phone" name="Teléfono" type="tel" inputmode="tel" autocomplete="tel" required></label>
+              <label class="sheet-inline-field" for="email"><span>E-MAIL: <b>*</b></span><input id="email" name="Correo electrónico" type="email" autocomplete="email" required></label>
+            </div>
+            <div class="sheet-minor-row">
+              <label for="isMinor"><span>SI ES MENOR DE EDAD:</span><select id="isMinor" name="Consumidor menor de edad" required><option value="No" selected>No</option><option value="Sí">Sí</option></select></label>
+              <div id="guardianFields" class="guardian-fields" hidden><label for="guardianName">NOMBRE DEL PADRE, MADRE O APODERADO: <b>*</b></label><input id="guardianName" name="Padre, madre o apoderado" type="text" autocomplete="name"></div>
+            </div>
+
+            <div class="sheet-section-title">2. IDENTIFICACIÓN DEL BIEN CONTRATADO</div>
+            <div class="sheet-contract-row">
+              <label class="sheet-kind-choice"><span>PRODUCTO</span><input type="radio" name="Bien contratado" value="Producto" required aria-label="Producto"></label>
+              <label class="sheet-contract-field" for="amount"><span>MONTO RECLAMADO:</span><input id="amount" name="Monto reclamado" type="number" min="0" step="0.01" inputmode="decimal" placeholder="S/ 0.00"></label>
+            </div>
+            <div class="sheet-contract-row">
+              <label class="sheet-kind-choice"><span>SERVICIO</span><input type="radio" name="Bien contratado" value="Servicio" required aria-label="Servicio"></label>
+              <label class="sheet-contract-field" for="serviceDescription"><span>DESCRIPCIÓN: <b>*</b></span><input id="serviceDescription" name="Descripción del bien contratado" type="text" required></label>
+            </div>
+
+            <div class="sheet-claim-heading">
+              <div>3. DETALLE DE LA RECLAMACIÓN Y PEDIDO DEL CONSUMIDOR</div>
+              <label><span>RECLAMO<sup>1</sup></span><input type="radio" name="Tipo de registro" value="Reclamo" required></label>
+              <label><span>QUEJA<sup>2</sup></span><input type="radio" name="Tipo de registro" value="Queja" required></label>
+            </div>
+            <label class="sheet-area sheet-detail-area" for="detail"><span>DETALLE: <b>*</b></span><textarea id="detail" name="Detalle de la reclamación" minlength="10" required></textarea></label>
+            <div class="sheet-request-row">
+              <label class="sheet-area" for="request"><span>PEDIDO: <b>*</b></span><textarea id="request" name="Pedido del consumidor" minlength="5" required></textarea></label>
+              <div id="signatureBox" class="sheet-signature">
+                <div class="signature-workspace">
+                  <div class="signature-methods" role="tablist" aria-label="Método de firma">
+                    <button class="signature-method active" type="button" role="tab" aria-selected="true" data-signature-mode="draw"><i class="fas fa-pen-nib" aria-hidden="true"></i>Dibujar</button>
+                    <button class="signature-method" type="button" role="tab" aria-selected="false" data-signature-mode="upload"><i class="fas fa-image" aria-hidden="true"></i>Subir imagen</button>
+                  </div>
+
+                  <div class="signature-panel" data-signature-panel="draw">
+                    <div class="signature-pad-wrap">
+                      <canvas id="signaturePad" width="640" height="220" tabindex="0" aria-label="Área para dibujar la firma"></canvas>
+                      <span id="signaturePlaceholder" class="signature-placeholder">Firma aquí con el mouse o el dedo</span>
+                    </div>
+                    <button id="clearSignature" class="signature-tool" type="button"><i class="fas fa-eraser" aria-hidden="true"></i>Borrar firma</button>
+                  </div>
+
+                  <div class="signature-panel signature-upload-panel" data-signature-panel="upload" hidden>
+                    <input id="signatureUpload" class="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp">
+                    <label class="signature-upload-button" for="signatureUpload"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i>Elegir imagen</label>
+                    <div class="signature-upload-preview">
+                      <img id="signatureImagePreview" alt="Vista previa de la firma cargada" hidden>
+                      <span id="signatureUploadText">PNG, JPG o WEBP · máximo 2 MB</span>
+                    </div>
+                    <button id="removeSignatureUpload" class="signature-tool" type="button" hidden><i class="fas fa-trash-can" aria-hidden="true"></i>Quitar imagen</button>
+                  </div>
+
+                  <img id="signatureExportPreview" class="signature-export-preview" alt="Firma del consumidor">
+                  <input id="signatureMethod" name="Método de firma" type="hidden">
+                  <input id="signatureConfirmation" name="Firma del consumidor" type="hidden">
+                  <p class="signature-help">La firma quedará incorporada en la copia PDF.</p>
+                  <p id="signatureError" class="signature-error" role="alert"></p>
+                </div>
+                <span class="signature-caption">FIRMA DEL CONSUMIDOR</span>
+              </div>
+            </div>
+
+            <div class="sheet-section-title">4. OBSERVACIONES Y ACCIONES ADOPTADAS POR EL PROVEEDOR</div>
+            <label class="sheet-response-date"><span>FECHA DE COMUNICACIÓN DE LA RESPUESTA:</span><input type="text" readonly aria-label="Fecha de comunicación de la respuesta"></label>
+            <div class="sheet-provider-response">
+              <textarea readonly aria-label="Observaciones y acciones del proveedor"></textarea>
+              <div class="sheet-provider-signature"><span>FIRMA DEL PROVEEDOR</span></div>
+            </div>
+
+            <div class="sheet-definitions">
+              <p><sup>1</sup> <strong>RECLAMO:</strong> Disconformidad relacionada a los productos o servicios.</p>
+              <p><sup>2</sup> <strong>QUEJA:</strong> Disconformidad no relacionada a los productos o servicios; o, malestar o descontento respecto a la atención al público.</p>
+            </div>
+            <div class="sheet-bottom-title">HOJA DE RECLAMACIÓN VIRTUAL</div>
+            <div class="sheet-legal-notes">
+              <p>* La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI.</p>
+              <p>* El proveedor debe dar respuesta al reclamo o queja en un plazo no mayor a quince (15) días hábiles, el cual es improrrogable.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="claim-submit-panel">
+          <p class="claim-submit-intro">Revisa la información de la hoja antes de registrarla.</p>
+          <p class="claim-pdf-note"><i class="fas fa-file-pdf" aria-hidden="true"></i>Al enviarla, generaremos una copia PDF con todos los datos y la firma. El archivo llegará adjunto al correo de Alimentos Marce y se enviará una copia al correo registrado.</p>
+          <div class="claim-consents">
+            <label class="consent"><input type="checkbox" name="Declaración de veracidad" value="Aceptada" required><span>Declaro que la información consignada es verdadera y corresponde a los hechos descritos. <span class="required">*</span></span></label>
+            <label class="consent"><input type="checkbox" name="Aceptación de privacidad" value="Aceptada" required><span>Acepto el tratamiento de mis datos conforme a la <a class="mail-link" href="politica-de-privacidad.html" target="_blank">Política de Privacidad</a>. <span class="required">*</span></span></label>
+          </div>
+          <div class="form-actions"><button id="submitClaim" class="submit-btn" type="submit"><i class="fas fa-paper-plane" aria-hidden="true"></i><span>REGISTRAR RECLAMACIÓN</span></button></div>
+          <div id="claimStatus" class="form-status" role="status" aria-live="polite"></div>
+          <div id="receipt" class="receipt" aria-live="polite">
+            <h3>Hoja registrada correctamente</h3>
+            <p id="receiptText"></p>
+            <div class="receipt-actions"><button id="downloadCopy" class="secondary-btn" type="button"><i class="fas fa-file-arrow-down" aria-hidden="true"></i>Descargar PDF</button><button id="printCopy" class="secondary-btn" type="button"><i class="fas fa-print" aria-hidden="true"></i>Abrir / imprimir PDF</button></div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a class="footer-logo" href="index.html"><img src="logo.png" alt="Alimentos Marce"></a><p class="footer-copy">Soluciones de alimentación adaptadas a las necesidades de cada cliente, con calidad, compromiso y sabor.</p></div>
+        <div><h3>ENLACES</h3><ul><li><a href="index.html#inicio">Inicio</a></li><li><a href="index.html#nosotros">Nosotros</a></li><li><a href="index.html#servicios">Servicios</a></li><li><a href="index.html#calidad">Calidad</a></li><li><a href="index.html#contacto">Contacto</a></li></ul></div>
+        <div><h3>LEGAL</h3><ul><li><a href="terminos-y-condiciones.html">Términos y Condiciones</a></li><li><a href="politica-de-privacidad.html">Política de Privacidad</a></li><li><a href="libro-de-reclamaciones.html">Libro de Reclamaciones</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">© <span data-current-year></span> Alimentos Marce S.A.C. · RUC: 20610853227. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+  <a class="wa-float" href="https://wa.me/51931515526" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+  <div id="pdfStage" aria-hidden="true"></div>
+  <script src="marce-document.min.js"></script>
+
+  <script>
+  (function () {
+    const form = document.getElementById('claimForm');
+    const sheet = document.querySelector('.complaint-sheet');
+    const minorSelect = document.getElementById('isMinor');
+    const guardianFields = document.getElementById('guardianFields');
+    const guardianName = document.getElementById('guardianName');
+    const submitButton = document.getElementById('submitClaim');
+    const submitLabel = submitButton.querySelector('span');
+    const status = document.getElementById('claimStatus');
+    const receipt = document.getElementById('receipt');
+    const receiptText = document.getElementById('receiptText');
+    const dateField = document.getElementById('claimDateHidden');
+    const idField = document.getElementById('claimIdHidden');
+    const dateDisplay = document.getElementById('claimDateDisplay');
+    const idDisplay = document.getElementById('claimIdDisplay');
+    const signatureBox = document.getElementById('signatureBox');
+    const signatureCanvas = document.getElementById('signaturePad');
+    const signatureContext = signatureCanvas.getContext('2d');
+    const signaturePlaceholder = document.getElementById('signaturePlaceholder');
+    const signatureUpload = document.getElementById('signatureUpload');
+    const signatureImagePreview = document.getElementById('signatureImagePreview');
+    const signatureUploadText = document.getElementById('signatureUploadText');
+    const signatureExportPreview = document.getElementById('signatureExportPreview');
+    const signatureMethod = document.getElementById('signatureMethod');
+    const signatureConfirmation = document.getElementById('signatureConfirmation');
+    const signatureError = document.getElementById('signatureError');
+    const signatureModeButtons = Array.from(document.querySelectorAll('[data-signature-mode]'));
+    const signaturePanels = Array.from(document.querySelectorAll('[data-signature-panel]'));
+    const receiptTitle = receipt.querySelector('h3');
+    const pdfStage = document.getElementById('pdfStage');
+    const localQaMode = location.hostname === 'terminal.local' && new URLSearchParams(location.search).get('qa') === '1';
+    let activeSignatureMode = 'draw';
+    let isDrawing = false;
+    let hasDrawnSignature = false;
+    let uploadedSignatureDataUrl = '';
+    let lastPdfBlob = null;
+    let lastPdfName = '';
+
+    document.querySelectorAll('[data-current-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+    const formatDate = function (date) {
+      return new Intl.DateTimeFormat('es-PE', { dateStyle: 'long', timeStyle: 'short', timeZone: 'America/Lima' }).format(date);
+    };
+
+    const createRecordId = function () {
+      const now = new Date();
+      const ymd = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(now).replaceAll('-', '');
+      const bytes = new Uint8Array(3);
+      if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(bytes);
+      else for (let i = 0; i < bytes.length; i += 1) bytes[i] = Math.floor(Math.random() * 256);
+      const suffix = Array.from(bytes, function (byte) { return byte.toString(16).padStart(2, '0'); }).join('').toUpperCase();
+      return 'AM-' + ymd + '-' + suffix;
+    };
+
+    const initialDate = new Date();
+    dateField.value = formatDate(initialDate);
+    dateDisplay.value = dateField.value;
+
+    const setGuardianVisibility = function () {
+      const visible = minorSelect.value === 'Sí';
+      guardianFields.hidden = !visible;
+      guardianName.required = visible;
+      if (!visible) guardianName.value = '';
+    };
+    minorSelect.addEventListener('change', setGuardianVisibility);
+    setGuardianVisibility();
+
+    signatureContext.lineWidth = 4;
+    signatureContext.lineCap = 'round';
+    signatureContext.lineJoin = 'round';
+    signatureContext.strokeStyle = '#3e1c00';
+
+    const currentSignatureDataUrl = function () {
+      if (activeSignatureMode === 'draw') return hasDrawnSignature ? signatureCanvas.toDataURL('image/png') : '';
+      return uploadedSignatureDataUrl;
+    };
+
+    const updateSignatureState = function () {
+      const dataUrl = currentSignatureDataUrl();
+      const hasSignature = Boolean(dataUrl);
+      signatureMethod.value = activeSignatureMode === 'draw' ? 'Firma dibujada' : 'Imagen de firma';
+      signatureConfirmation.value = hasSignature ? (activeSignatureMode === 'draw' ? 'Firma dibujada e incluida en el PDF' : 'Imagen de firma incluida en el PDF') : '';
+      signaturePlaceholder.hidden = hasDrawnSignature;
+      signatureBox.classList.toggle('signature-complete', hasSignature);
+      if (hasSignature) {
+        signatureExportPreview.src = dataUrl;
+        signatureBox.classList.remove('signature-invalid');
+        signatureError.textContent = '';
+      } else {
+        signatureExportPreview.removeAttribute('src');
+      }
+    };
+
+    const setSignatureMode = function (mode) {
+      activeSignatureMode = mode;
+      signatureModeButtons.forEach(function (button) {
+        const active = button.dataset.signatureMode === mode;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', String(active));
+      });
+      signaturePanels.forEach(function (panel) { panel.hidden = panel.dataset.signaturePanel !== mode; });
+      updateSignatureState();
+    };
+
+    signatureModeButtons.forEach(function (button) {
+      button.addEventListener('click', function () { setSignatureMode(button.dataset.signatureMode); });
+    });
+
+    const canvasPoint = function (event) {
+      const rect = signatureCanvas.getBoundingClientRect();
+      return {
+        x: (event.clientX - rect.left) * (signatureCanvas.width / rect.width),
+        y: (event.clientY - rect.top) * (signatureCanvas.height / rect.height)
+      };
+    };
+
+    signatureCanvas.addEventListener('pointerdown', function (event) {
+      if (activeSignatureMode !== 'draw') return;
+      event.preventDefault();
+      isDrawing = true;
+      hasDrawnSignature = true;
+      signatureCanvas.setPointerCapture(event.pointerId);
+      const point = canvasPoint(event);
+      signatureContext.beginPath();
+      signatureContext.moveTo(point.x, point.y);
+      signatureContext.lineTo(point.x + .1, point.y + .1);
+      signatureContext.stroke();
+      signaturePlaceholder.hidden = true;
+      signatureBox.classList.remove('signature-invalid');
+      signatureError.textContent = '';
+    });
+
+    signatureCanvas.addEventListener('pointermove', function (event) {
+      if (!isDrawing) return;
+      event.preventDefault();
+      const point = canvasPoint(event);
+      signatureContext.lineTo(point.x, point.y);
+      signatureContext.stroke();
+    });
+
+    const finishDrawing = function (event) {
+      if (!isDrawing) return;
+      isDrawing = false;
+      if (event && signatureCanvas.hasPointerCapture(event.pointerId)) signatureCanvas.releasePointerCapture(event.pointerId);
+      updateSignatureState();
+    };
+    signatureCanvas.addEventListener('pointerup', finishDrawing);
+    signatureCanvas.addEventListener('pointercancel', finishDrawing);
+
+    document.getElementById('clearSignature').addEventListener('click', function () {
+      signatureContext.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+      hasDrawnSignature = false;
+      updateSignatureState();
+      signatureCanvas.focus();
+    });
+
+    signatureUpload.addEventListener('change', function () {
+      const file = signatureUpload.files && signatureUpload.files[0];
+      if (!file) return;
+      if (!/^image\/(png|jpe?g|webp)$/i.test(file.type) || file.size > 2 * 1024 * 1024) {
+        signatureUpload.value = '';
+        uploadedSignatureDataUrl = '';
+        signatureImagePreview.hidden = true;
+        document.getElementById('removeSignatureUpload').hidden = true;
+        signatureUploadText.textContent = 'La imagen debe ser PNG, JPG o WEBP y pesar máximo 2 MB.';
+        signatureBox.classList.add('signature-invalid');
+        signatureError.textContent = 'Selecciona una imagen de firma válida.';
+        updateSignatureState();
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.addEventListener('load', function () {
+        uploadedSignatureDataUrl = String(reader.result || '');
+        signatureImagePreview.src = uploadedSignatureDataUrl;
+        signatureImagePreview.hidden = false;
+        signatureUploadText.textContent = file.name;
+        document.getElementById('removeSignatureUpload').hidden = false;
+        updateSignatureState();
+      });
+      reader.addEventListener('error', function () {
+        signatureError.textContent = 'No pudimos leer la imagen. Intenta con otro archivo.';
+        signatureBox.classList.add('signature-invalid');
+      });
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('removeSignatureUpload').addEventListener('click', function () {
+      signatureUpload.value = '';
+      uploadedSignatureDataUrl = '';
+      signatureImagePreview.removeAttribute('src');
+      signatureImagePreview.hidden = true;
+      signatureUploadText.textContent = 'PNG, JPG o WEBP · máximo 2 MB';
+      document.getElementById('removeSignatureUpload').hidden = true;
+      updateSignatureState();
+    });
+
+    setSignatureMode('draw');
+
+    const showStatus = function (type, html) {
+      status.className = 'form-status visible ' + type;
+      status.innerHTML = html;
+      status.setAttribute('tabindex', '-1');
+      status.focus({ preventScroll: true });
+      status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    const escapeHtml = function (value) {
+      return String(value || '').replace(/[&<>'"]/g, function (character) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[character];
+      });
+    };
+
+    const validateSignature = function () {
+      if (currentSignatureDataUrl()) return true;
+      signatureBox.classList.add('signature-invalid');
+      signatureError.textContent = 'Firma dibujando en el recuadro o subiendo una imagen.';
+      const activeButton = signatureModeButtons.find(function (button) { return button.dataset.signatureMode === activeSignatureMode; });
+      if (activeButton) activeButton.focus();
+      signatureBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    };
+
+    const createPdfClone = function () {
+      const clone = sheet.cloneNode(true);
+      clone.classList.add('pdf-copy');
+      clone.style.width = '1000px';
+      clone.style.minWidth = '1000px';
+      clone.style.boxShadow = 'none';
+
+      const sourceFields = Array.from(sheet.querySelectorAll('input, select, textarea, output'));
+      const cloneFields = Array.from(clone.querySelectorAll('input, select, textarea, output'));
+      sourceFields.forEach(function (source, index) {
+        const target = cloneFields[index];
+        if (!target || source.closest('.signature-workspace')) return;
+
+        if (source.matches('input[type="radio"], input[type="checkbox"]')) {
+          const choice = document.createElement('span');
+          choice.className = 'pdf-choice' + (source.checked ? ' checked' : '');
+          choice.textContent = source.checked ? '✓' : '';
+          target.replaceWith(choice);
+          return;
+        }
+
+        const valueBox = document.createElement('div');
+        valueBox.className = 'pdf-field-value' + (source.tagName === 'TEXTAREA' ? ' pdf-textarea-value' : '');
+        if (source.tagName === 'SELECT') valueBox.textContent = source.selectedIndex >= 0 ? source.options[source.selectedIndex].text : '';
+        else valueBox.textContent = source.value || source.textContent || ' ';
+        target.replaceWith(valueBox);
+      });
+
+      clone.querySelectorAll('.signature-methods, .signature-panel, .signature-help, .signature-error, #signatureMethod, #signatureConfirmation').forEach(function (element) { element.remove(); });
+      const exportImage = clone.querySelector('.signature-export-preview');
+      exportImage.removeAttribute('hidden');
+      exportImage.src = currentSignatureDataUrl();
+      return clone;
+    };
+
+    const createClaimPdf = async function (fileName) {
+      if (typeof window.html2pdf !== 'function') throw new Error('El generador PDF no está disponible');
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      if (signatureExportPreview.src && signatureExportPreview.decode) await signatureExportPreview.decode().catch(function () {});
+
+      const clone = createPdfClone();
+      pdfStage.appendChild(clone);
+      try {
+        await new Promise(function (resolve) { requestAnimationFrame(function () { requestAnimationFrame(resolve); }); });
+        const options = {
+          margin: [6, 6, 6, 6],
+          filename: fileName,
+          image: { type: 'jpeg', quality: .94 },
+          html2canvas: { scale: 2, useCORS: true, allowTaint: false, backgroundColor: '#ffffff', logging: false, scrollX: 0, scrollY: 0, windowWidth: 1020 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
+          pagebreak: { mode: ['css', 'legacy'] }
+        };
+        const worker = window.html2pdf().set(options).from(clone).toCanvas().toPdf();
+        const canvas = await worker.get('canvas');
+        const pdf = await worker.get('pdf');
+        while (pdf.internal.getNumberOfPages() > 1) pdf.deletePage(pdf.internal.getNumberOfPages());
+        pdf.setPage(1);
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const availableWidth = pageWidth - 12;
+        const availableHeight = pageHeight - 12;
+        const scale = Math.min(availableWidth / canvas.width, availableHeight / canvas.height);
+        const renderWidth = canvas.width * scale;
+        const renderHeight = canvas.height * scale;
+        const renderX = (pageWidth - renderWidth) / 2;
+        const renderY = (pageHeight - renderHeight) / 2;
+        pdf.setFillColor(255, 255, 255);
+        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+        pdf.addImage(canvas.toDataURL('image/jpeg', .94), 'JPEG', renderX, renderY, renderWidth, renderHeight, undefined, 'FAST');
+        const blob = pdf.output('blob');
+        if (!(blob instanceof Blob) || blob.size === 0) throw new Error('El PDF generado está vacío');
+        if (blob.size > 9 * 1024 * 1024) throw new Error('El PDF supera el tamaño permitido');
+        if (localQaMode) {
+          const pdfText = await blob.text();
+          document.documentElement.dataset.qaPdfBytes = String(blob.size);
+          document.documentElement.dataset.qaPdfPages = String((pdfText.match(/\/Type\s*\/Page(?!s)/g) || []).length);
+        }
+        return blob;
+      } finally {
+        clone.remove();
+      }
+    };
+
+    const downloadPdf = function (blob, name) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    };
+
+    document.getElementById('downloadCopy').addEventListener('click', function () {
+      if (lastPdfBlob) downloadPdf(lastPdfBlob, lastPdfName);
+    });
+
+    document.getElementById('printCopy').addEventListener('click', function () {
+      if (!lastPdfBlob) return;
+      const url = URL.createObjectURL(lastPdfBlob);
+      const opened = window.open(url, '_blank', 'noopener,noreferrer');
+      if (!opened) downloadPdf(lastPdfBlob, lastPdfName);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+    });
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!validateSignature()) return;
+
+      const now = new Date();
+      const recordId = createRecordId();
+      dateField.value = formatDate(now);
+      idField.value = recordId;
+      dateDisplay.value = dateField.value;
+      idDisplay.textContent = recordId;
+      submitButton.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      submitLabel.textContent = 'Generando PDF...';
+      status.className = 'form-status';
+      status.innerHTML = '';
+      receipt.classList.remove('visible', 'pending');
+      lastPdfBlob = null;
+      lastPdfName = 'Hoja-de-Reclamacion-' + recordId + '.pdf';
+      let registered = false;
+
+      try {
+        lastPdfBlob = await createClaimPdf(lastPdfName);
+        submitLabel.textContent = 'Enviando reclamación...';
+        const formData = new FormData(form);
+        const email = document.getElementById('email').value.trim();
+        formData.set('_subject', 'Libro de Reclamaciones ' + recordId + ' - Alimentos Marce');
+        formData.set('_replyto', email);
+        formData.set('_cc', email);
+        formData.set('_autoresponse', 'Hemos recibido tu Hoja de Reclamación ' + recordId + '. Alimentos Marce responderá dentro del plazo legal aplicable. La copia PDF también fue enviada al correo registrado.');
+        formData.set('Archivo PDF', lastPdfName);
+        formData.append('attachment', new File([lastPdfBlob], lastPdfName, { type: 'application/pdf' }));
+
+        let sent = true;
+        if (localQaMode) {
+          await new Promise(function (resolve) { setTimeout(resolve, 350); });
+        } else {
+          const controller = new AbortController();
+          const timeout = setTimeout(function () { controller.abort(); }, 20000);
+          try {
+            const response = await fetch('https://formsubmit.co/ajax/ventas@alimentosmarce.com', { method: 'POST', headers: { 'Accept': 'application/json' }, body: formData, signal: controller.signal });
+            const result = await response.json().catch(function () { return {}; });
+            sent = response.ok && (result.success === true || result.success === 'true');
+          } finally {
+            clearTimeout(timeout);
+          }
+        }
+        if (!sent) throw new Error('No se pudo confirmar el registro');
+
+        showStatus('success', '<strong>¡Reclamación registrada con éxito!</strong> El PDF completado fue enviado a Alimentos Marce y se remitió una copia al correo indicado.');
+        receiptTitle.textContent = 'Hoja registrada correctamente';
+        receiptText.innerHTML = 'Tu número de registro es <strong>' + escapeHtml(recordId) + '</strong>. Guarda este número para futuras consultas.';
+        receipt.classList.add('visible');
+        registered = true;
+        submitLabel.textContent = 'RECLAMACIÓN REGISTRADA ✓';
+        form.classList.add('registered');
+        Array.from(form.elements).forEach(function (element) {
+          if (element.tagName !== 'BUTTON' && element.type !== 'hidden') element.disabled = true;
+        });
+      } catch (error) {
+        showStatus('error', 'No pudimos completar el envío en este momento. Tus datos permanecen en el formulario para que vuelvas a intentarlo. También puedes <a class="mail-link" href="https://wa.me/51931515526" target="_blank" rel="noopener noreferrer">escribirnos por WhatsApp</a>.');
+        if (lastPdfBlob) {
+          receiptTitle.textContent = 'PDF generado · envío pendiente';
+          receiptText.textContent = 'Puedes descargar la copia, revisar tu conexión e intentar registrar la reclamación nuevamente.';
+          receipt.classList.add('visible', 'pending');
+        }
+        submitButton.disabled = false;
+      } finally {
+        if (!registered) submitLabel.textContent = 'REGISTRAR RECLAMACIÓN';
+        form.removeAttribute('aria-busy');
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
