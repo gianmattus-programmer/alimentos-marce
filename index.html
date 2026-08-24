@@ -143,9 +143,9 @@
             width: 100%;
             max-height: 78px;
             object-fit: contain;
-            filter: grayscale(100%);
-            opacity: .34;
-            transition: filter .35s ease, opacity .35s ease, transform .35s ease;
+            filter: none;
+            opacity: 1;
+            transition: transform .35s ease;
         }
         .client-logo-card:hover img {
             filter: none;
@@ -154,15 +154,13 @@
         }
         .client-logo-card.air-products img { max-width: 185px; max-height: 58px; }
         .client-logo-card.serma img { max-width: 205px; max-height: 78px; }
-        .client-logo-card.gll { background: #fff; }
-        .client-logo-card.gll img {
+        .client-logo-card.third { background: #fff; }
+        .client-logo-card.third img {
             max-width: 220px;
             max-height: 62px;
-            filter: grayscale(100%) brightness(.45);
-            opacity: .52;
+            filter: none;
+            opacity: 1;
         }
-        .client-logo-card.gll:hover { background: #291407; border-color: #291407; }
-        .client-logo-card.gll:hover img { filter: none; opacity: 1; }
 
         /* Mantiene los CTA alineados al pie de todas las tarjetas. */
         .service-card { display: flex; flex-direction: column; }
@@ -243,7 +241,7 @@
             }
             .client-logo-card.air-products img { max-width: 100%; max-height: 42px; }
             .client-logo-card.serma img { max-width: 100%; max-height: 48px; }
-            .client-logo-card.gll img { max-width: 100%; max-height: 40px; }
+            .client-logo-card.third img { max-width: 100%; max-height: 40px; }
         }
 
         /* WA Widget (Se mantiene) */
@@ -881,8 +879,8 @@ html, body {
                 <div class="client-logo-card air-products">
                     <img src="cliente-air-products.png" alt="Air Products" loading="eager" decoding="async">
                 </div>
-                <div class="client-logo-card gll">
-                    <img src="cliente-gll.png" alt="GLL Construcciones y Montajes" loading="eager" decoding="async">
+                <div class="client-logo-card third">
+                    <img src="cliente-tercero.avif" alt="Empresa cliente de Alimentos Marce" loading="eager" decoding="async">
                 </div>
             </div>
         </div>
@@ -1043,33 +1041,53 @@ html, body {
             <div class="text-center mb-16 reveal">
                 <h2 class="text-sm font-bold text-marce-orange uppercase tracking-widest mb-2">Nuestra Propuesta Gastronómica</h2>
                 <h3 class="text-4xl md:text-5xl font-serif text-marce-brown font-bold">Sabor y variedad en cada servicio</h3>
-                <p class="text-gray-600 text-lg font-light mt-4 max-w-3xl mx-auto">Conoce parte de nuestros servicios, preparaciones y experiencias de alimentación corporativa.</p>
+                <p class="text-gray-600 text-lg font-light mt-4 max-w-3xl mx-auto">Una muestra de las preparaciones y servicios que forman parte de nuestra propuesta gastronómica.</p>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 reveal" aria-label="Vista previa de la galería de Alimentos Marce">
-                <figure class="col-span-2 row-span-2 relative overflow-hidden rounded-2xl shadow-lg min-h-[360px] md:min-h-[520px]">
-                    <img src="galeria/galeria-12.avif" alt="Servicio de concesionario de alimentos de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
-                </figure>
-                <figure class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px]">
-                    <img src="galeria/galeria-28.avif" alt="Menú delivery de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
-                </figure>
-                <figure class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px]">
-                    <img src="galeria/galeria-13.avif" alt="Coffee break de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
-                </figure>
-                <figure class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px]">
-                    <img src="galeria/galeria-01.avif" alt="Preparación gastronómica de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
-                </figure>
-                <button id="openGallery" type="button" class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px] group focus:outline-none focus-visible:ring-4 focus-visible:ring-marce-orange/40" aria-controls="galleryModal" aria-expanded="false" aria-label="Abrir galería completa de 31 imágenes">
+            <!-- CSS Grid Masonry Look -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px] md:auto-rows-[250px] reveal" aria-label="Vista previa de la galería de Alimentos Marce">
+                <div class="md:col-span-2 md:row-span-2 relative group rounded-2xl overflow-hidden shadow-lg">
+                    <img src="galeria/galeria-12.avif" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Preparación gastronómica de Alimentos Marce" loading="lazy" decoding="async">
+                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <span class="text-white font-serif text-2xl font-bold">Menú Ejecutivo</span>
+                    </div>
+                </div>
+                
+                <div class="relative group rounded-2xl overflow-hidden shadow-lg">
+                    <img src="galeria/galeria-28.avif" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Menú delivery de Alimentos Marce" loading="lazy" decoding="async">
+                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <span class="text-white font-serif text-xl font-bold">Línea Saludable</span>
+                    </div>
+                </div>
+                
+                <div class="relative group rounded-2xl overflow-hidden shadow-lg">
+                    <img src="galeria/galeria-13.avif" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Coffee break de Alimentos Marce" loading="lazy" decoding="async">
+                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <span class="text-white font-serif text-xl font-bold">Coffee Break</span>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-3 h-[200px] md:h-[300px] relative group rounded-2xl overflow-hidden shadow-lg">
+                    <img src="galeria/galeria-01.avif" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Eventos especiales y almuerzos de confraternidad de Alimentos Marce" loading="lazy" decoding="async">
+                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <span class="text-white font-serif text-2xl font-bold">Eventos Especiales y Almuerzos de Confraternidad</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 flex justify-center reveal">
+                <button id="openGallery" type="button" class="relative w-full max-w-sm aspect-[4/3] overflow-hidden rounded-2xl shadow-lg group focus:outline-none focus-visible:ring-4 focus-visible:ring-marce-orange/40" aria-controls="galleryModal" aria-expanded="false" aria-label="Abrir galería completa de 31 imágenes">
                     <img src="galeria/galeria-05.avif" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy" decoding="async">
                     <span class="absolute inset-0 bg-marce-brown/70 group-hover:bg-marce-orange/80 transition-colors"></span>
-                    <span class="relative z-10 h-full min-h-[175px] md:min-h-[250px] flex flex-col items-center justify-center text-white">
-                        <span class="w-16 h-16 rounded-full border-2 border-white/80 flex items-center justify-center text-5xl font-light leading-none mb-3" aria-hidden="true">+</span>
-                        <span class="font-bold text-base md:text-lg">Ver todas</span>
-                        <span class="text-white/80 text-sm mt-1">31 imágenes</span>
+                    <span class="relative z-10 h-full flex flex-col items-center justify-center text-white">
+                        <span class="w-20 h-20 rounded-full border-2 border-white flex items-center justify-center text-5xl font-light leading-none mb-4" aria-hidden="true">+</span>
+                        <span class="font-bold text-xl md:text-2xl">Ver todas</span>
+                        <span class="text-white/90 text-base mt-1">31 imágenes</span>
                     </span>
                 </button>
             </div>
         </div>
+    </section>
 
         <div id="galleryModal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle" aria-hidden="true">
             <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" data-gallery-backdrop></div>
