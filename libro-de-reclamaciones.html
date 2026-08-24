@@ -148,7 +148,7 @@
 
         <section class="claim-submit-panel">
           <p class="claim-submit-intro">Revisa la información de la hoja antes de registrarla.</p>
-          <p class="claim-pdf-note"><i class="fas fa-file-pdf" aria-hidden="true"></i>Al enviarla, generaremos una copia PDF con todos los datos y la firma. El archivo llegará adjunto al correo de Alimentos Marce y se enviará una copia al correo registrado.</p>
+          <p class="claim-pdf-note"><i class="fas fa-file-pdf" aria-hidden="true"></i>Al enviarla, completaremos el formato original de la Hoja de Reclamación con tus datos y firma. Ese mismo PDF llegará adjunto a Alimentos Marce y quedará disponible para descargar.</p>
           <div class="claim-consents">
             <label class="consent"><input type="checkbox" name="Declaración de veracidad" value="Aceptada" required><span>Declaro que la información consignada es verdadera y corresponde a los hechos descritos. <span class="required">*</span></span></label>
             <label class="consent"><input type="checkbox" name="Aceptación de privacidad" value="Aceptada" required><span>Acepto el tratamiento de mis datos conforme a la <a class="mail-link" href="politica-de-privacidad.html" target="_blank">Política de Privacidad</a>. <span class="required">*</span></span></label>
@@ -177,13 +177,10 @@
   </footer>
   <a class="wa-float" href="https://wa.me/51931515526" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
-  <div id="pdfStage" aria-hidden="true"></div>
-  <script src="marce-document.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script>
   (function () {
     const form = document.getElementById('claimForm');
-    const sheet = document.querySelector('.complaint-sheet');
     const minorSelect = document.getElementById('isMinor');
     const guardianFields = document.getElementById('guardianFields');
     const guardianName = document.getElementById('guardianName');
@@ -210,7 +207,6 @@
     const signatureModeButtons = Array.from(document.querySelectorAll('[data-signature-mode]'));
     const signaturePanels = Array.from(document.querySelectorAll('[data-signature-panel]'));
     const receiptTitle = receipt.querySelector('h3');
-    const pdfStage = document.getElementById('pdfStage');
     const localQaMode = location.hostname === 'terminal.local' && new URLSearchParams(location.search).get('qa') === '1';
     let activeSignatureMode = 'draw';
     let isDrawing = false;
@@ -223,6 +219,12 @@
 
     const formatDate = function (date) {
       return new Intl.DateTimeFormat('es-PE', { dateStyle: 'long', timeStyle: 'short', timeZone: 'America/Lima' }).format(date);
+    };
+
+    const formatPdfDate = function (date) {
+      const parts = new Intl.DateTimeFormat('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'America/Lima' }).formatToParts(date);
+      const get = function (type) { return (parts.find(function (part) { return part.type === type; }) || {}).value || ''; };
+      return get('day') + '/' + get('month') + '/' + get('year');
     };
 
     const createRecordId = function () {
@@ -351,7 +353,6 @@
         updateSignatureState();
         return;
       }
-
       const reader = new FileReader();
       reader.addEventListener('load', function () {
         uploadedSignatureDataUrl = String(reader.result || '');
@@ -404,87 +405,216 @@
       return false;
     };
 
-    const createPdfClone = function () {
-      const clone = sheet.cloneNode(true);
-      clone.classList.add('pdf-copy');
-      clone.style.width = '1000px';
-      clone.style.minWidth = '1000px';
-      clone.style.boxShadow = 'none';
-
-      const sourceFields = Array.from(sheet.querySelectorAll('input, select, textarea, output'));
-      const cloneFields = Array.from(clone.querySelectorAll('input, select, textarea, output'));
-      sourceFields.forEach(function (source, index) {
-        const target = cloneFields[index];
-        if (!target || source.closest('.signature-workspace')) return;
-
-        if (source.matches('input[type="radio"], input[type="checkbox"]')) {
-          const choice = document.createElement('span');
-          choice.className = 'pdf-choice' + (source.checked ? ' checked' : '');
-          choice.textContent = source.checked ? '✓' : '';
-          target.replaceWith(choice);
-          return;
-        }
-
-        const valueBox = document.createElement('div');
-        valueBox.className = 'pdf-field-value' + (source.tagName === 'TEXTAREA' ? ' pdf-textarea-value' : '');
-        if (source.tagName === 'SELECT') valueBox.textContent = source.selectedIndex >= 0 ? source.options[source.selectedIndex].text : '';
-        else valueBox.textContent = source.value || source.textContent || ' ';
-        target.replaceWith(valueBox);
+    const dataUrlToPngBytes = async function (dataUrl) {
+      if (dataUrl.startsWith('data:image/png')) {
+        const base64 = dataUrl.split(',')[1] || '';
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+        return bytes;
+      }
+      const image = new Image();
+      await new Promise(function (resolve, reject) {
+        image.onload = resolve;
+        image.onerror = reject;
+        image.src = dataUrl;
       });
-
-      clone.querySelectorAll('.signature-methods, .signature-panel, .signature-help, .signature-error, #signatureMethod, #signatureConfirmation').forEach(function (element) { element.remove(); });
-      const exportImage = clone.querySelector('.signature-export-preview');
-      exportImage.removeAttribute('hidden');
-      exportImage.src = currentSignatureDataUrl();
-      return clone;
+      const canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth || image.width;
+      canvas.height = image.naturalHeight || image.height;
+      canvas.getContext('2d').drawImage(image, 0, 0);
+      return dataUrlToPngBytes(canvas.toDataURL('image/png'));
     };
 
-    const createClaimPdf = async function (fileName) {
-      if (typeof window.html2pdf !== 'function') throw new Error('El generador PDF no está disponible');
-      if (document.fonts && document.fonts.ready) await document.fonts.ready;
-      if (signatureExportPreview.src && signatureExportPreview.decode) await signatureExportPreview.decode().catch(function () {});
+    const createClaimPdf = async function () {
+      if (!window.PDFLib) throw new Error('El generador PDF no está disponible');
+      const PDFDocument = window.PDFLib.PDFDocument;
+      const StandardFonts = window.PDFLib.StandardFonts;
+      const rgb = window.PDFLib.rgb;
+      const pdfDoc = await PDFDocument.create();
+      pdfDoc.setTitle('Hoja de Reclamación - Alimentos Marce');
+      pdfDoc.setAuthor('Alimentos Marce S.A.C.');
+      pdfDoc.setSubject('Libro de Reclamaciones Virtual');
+      const page = pdfDoc.addPage([612, 792]);
+      const regular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const bold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+      const black = rgb(0, 0, 0);
+      const gray = rgb(.73, .73, .73);
+      const white = rgb(1, 1, 1);
+      const PAGE_H = 792;
+      const left = 29.28;
+      const right = 574.42;
+      const fullW = right - left;
 
-      const clone = createPdfClone();
-      pdfStage.appendChild(clone);
-      try {
-        await new Promise(function (resolve) { requestAnimationFrame(function () { requestAnimationFrame(resolve); }); });
-        const options = {
-          margin: [6, 6, 6, 6],
-          filename: fileName,
-          image: { type: 'jpeg', quality: .94 },
-          html2canvas: { scale: 2, useCORS: true, allowTaint: false, backgroundColor: '#ffffff', logging: false, scrollX: 0, scrollY: 0, windowWidth: 1020 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-          pagebreak: { mode: ['css', 'legacy'] }
-        };
-        const worker = window.html2pdf().set(options).from(clone).toCanvas().toPdf();
-        const canvas = await worker.get('canvas');
-        const pdf = await worker.get('pdf');
-        while (pdf.internal.getNumberOfPages() > 1) pdf.deletePage(pdf.internal.getNumberOfPages());
-        pdf.setPage(1);
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const availableWidth = pageWidth - 12;
-        const availableHeight = pageHeight - 12;
-        const scale = Math.min(availableWidth / canvas.width, availableHeight / canvas.height);
-        const renderWidth = canvas.width * scale;
-        const renderHeight = canvas.height * scale;
-        const renderX = (pageWidth - renderWidth) / 2;
-        const renderY = (pageHeight - renderHeight) / 2;
-        pdf.setFillColor(255, 255, 255);
-        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
-        pdf.addImage(canvas.toDataURL('image/jpeg', .94), 'JPEG', renderX, renderY, renderWidth, renderHeight, undefined, 'FAST');
-        const blob = pdf.output('blob');
-        if (!(blob instanceof Blob) || blob.size === 0) throw new Error('El PDF generado está vacío');
-        if (blob.size > 9 * 1024 * 1024) throw new Error('El PDF supera el tamaño permitido');
-        if (localQaMode) {
-          const pdfText = await blob.text();
-          document.documentElement.dataset.qaPdfBytes = String(blob.size);
-          document.documentElement.dataset.qaPdfPages = String((pdfText.match(/\/Type\s*\/Page(?!s)/g) || []).length);
+      const cell = function (x, top, width, height, fill) {
+        page.drawRectangle({ x: x, y: PAGE_H - top - height, width: width, height: height, color: fill || white, borderColor: black, borderWidth: .45 });
+      };
+      const textWidth = function (value, font, size) { return font.widthOfTextAtSize(String(value || ''), size); };
+      const text = function (value, x, top, opts) {
+        const options = opts || {};
+        const font = options.font || regular;
+        let size = options.size || 9;
+        const maxWidth = options.maxWidth || 9999;
+        const minSize = options.minSize || 5.8;
+        const content = String(value == null ? '' : value);
+        while (size > minSize && textWidth(content, font, size) > maxWidth) size -= .25;
+        let drawX = x;
+        if (options.align === 'center') drawX = x + Math.max(0, (maxWidth - textWidth(content, font, size)) / 2);
+        if (options.align === 'right') drawX = x + Math.max(0, maxWidth - textWidth(content, font, size));
+        page.drawText(content, { x: drawX, y: PAGE_H - top - size, size: size, font: font, color: black });
+      };
+      const wrapLines = function (content, font, size, maxWidth) {
+        const paragraphs = String(content || '').replace(/\r/g, '').split('\n');
+        const lines = [];
+        paragraphs.forEach(function (paragraph, paragraphIndex) {
+          const words = paragraph.trim().split(/\s+/).filter(Boolean);
+          if (!words.length) { if (paragraphIndex < paragraphs.length - 1) lines.push(''); return; }
+          let line = '';
+          words.forEach(function (word) {
+            const candidate = line ? line + ' ' + word : word;
+            if (line && textWidth(candidate, font, size) > maxWidth) { lines.push(line); line = word; }
+            else line = candidate;
+          });
+          if (line) lines.push(line);
+        });
+        return lines;
+      };
+      const wrappedText = function (value, x, top, maxWidth, maxHeight, startSize) {
+        let size = startSize || 8.5;
+        let lineHeight = size * 1.25;
+        let lines = wrapLines(value, regular, size, maxWidth);
+        while (size > 6 && lines.length * lineHeight > maxHeight) {
+          size -= .25;
+          lineHeight = size * 1.22;
+          lines = wrapLines(value, regular, size, maxWidth);
         }
-        return blob;
-      } finally {
-        clone.remove();
+        const maxLines = Math.max(1, Math.floor(maxHeight / lineHeight));
+        lines.slice(0, maxLines).forEach(function (line, index) {
+          let finalLine = line;
+          if (index === maxLines - 1 && lines.length > maxLines) finalLine = line.replace(/[.\s]+$/, '') + '…';
+          page.drawText(finalLine, { x: x, y: PAGE_H - top - size - (index * lineHeight), size: size, font: regular, color: black });
+        });
+      };
+      const centerText = function (value, x, top, width, size, font) {
+        text(value, x, top, { maxWidth: width, size: size, font: font || bold, align: 'center', minSize: 6 });
+      };
+      const markX = function (x, top, width, height) {
+        const pad = Math.min(width, height) * .28;
+        const yTop = PAGE_H - top - pad;
+        const yBottom = PAGE_H - top - height + pad;
+        page.drawLine({ start: { x: x + pad, y: yTop }, end: { x: x + width - pad, y: yBottom }, thickness: 1.15, color: black });
+        page.drawLine({ start: { x: x + width - pad, y: yTop }, end: { x: x + pad, y: yBottom }, thickness: 1.15, color: black });
+      };
+
+      cell(left, 61.44, 375.19, 23.4, gray);
+      cell(404.47, 61.44, 169.95, 46.82, white);
+      cell(left, 84.84, 52.22, 23.4, white);
+      cell(81.5, 84.84, 322.97, 23.4, white);
+      cell(left, 108.24, fullW, 36.4, white);
+      cell(left, 144.64, fullW, 16.06, gray);
+      cell(left, 160.7, 81.14, 23.16, white); cell(110.42, 160.7, 464, 23.16, white);
+      cell(left, 183.86, 81.14, 23.16, white); cell(110.42, 183.86, 464, 23.16, white);
+      cell(left, 207.02, 81.14, 25.68, white); cell(110.42, 207.02, 464, 25.68, white);
+      cell(left, 232.7, 81.14, 19.59, white); cell(110.42, 232.7, 120.27, 19.59, white); cell(230.69, 232.7, 49.56, 19.59, white); cell(280.25, 232.7, 294.17, 19.59, white);
+      cell(left, 252.29, fullW, 14.16, white);
+      cell(left, 266.45, fullW, 22.0, white);
+      cell(left, 288.45, fullW, 17.24, gray);
+      cell(left, 305.69, 137.54, 17.76, white); cell(166.82, 305.69, 28.44, 17.76, white); cell(195.26, 305.69, 141.77, 17.76, white); cell(337.03, 305.69, 237.39, 17.76, white);
+      cell(left, 323.45, 137.54, 19.44, white); cell(166.82, 323.45, 28.44, 19.44, white); cell(195.26, 323.45, 141.77, 19.44, white); cell(337.03, 323.45, 237.39, 19.44, white);
+      cell(left, 342.89, 298.37, 23.76, gray); cell(327.65, 342.89, 84.62, 23.76, white); cell(412.27, 342.89, 42.12, 23.76, white); cell(454.39, 342.89, 77.67, 23.76, white); cell(532.06, 342.89, 42.36, 23.76, white);
+      cell(left, 366.65, fullW, 120.02, white);
+      cell(left, 486.67, 375.19, 96.15, white); cell(404.47, 486.67, 169.95, 70.71, white); cell(404.47, 557.38, 169.95, 25.44, white);
+      cell(left, 582.82, fullW, 23.16, gray);
+      cell(left, 605.98, 233.69, 23.04, white); cell(262.97, 605.98, 141.5, 23.04, white); cell(404.47, 605.98, 169.95, 86.64, white);
+      cell(left, 629.02, 375.19, 63.6, white);
+      cell(404.47, 692.62, 169.95, 22.22, white);
+      cell(left, 714.84, 272.57, 24.72, white); cell(301.85, 714.84, 272.57, 24.72, white);
+      cell(left, 739.56, fullW, 19.08, gray);
+
+      centerText('LIBRO DE RECLAMACIONES', left, 66.1, 375.19, 10.5, bold);
+      centerText('HOJA DE RECLAMACIÓN', 404.47, 66.1, 169.95, 10.5, bold);
+      text('FECHA:', 34.2, 91.5, { size: 8.7 });
+      text('N°', 410.2, 91.1, { size: 9.2, font: bold });
+      text('-', 510.2, 91.1, { size: 10, font: bold });
+      text('PROVEEDOR:', 34.2, 111.5, { size: 8.6, font: bold }); text('ALIMENTOS MARCE S.A.C.', 99.5, 111.5, { size: 8.6 });
+      text('RUC:', 34.2, 122.7, { size: 8.6, font: bold }); text('20610853227', 99.5, 122.7, { size: 8.6 });
+      text('DOMICILIO:', 34.2, 133.8, { size: 8.6, font: bold }); text('ASOC. NUEVA VICTORIA MZ A LT 08', 99.5, 133.8, { size: 8.4 });
+      text('1. IDENTIFICACIÓN DEL CONSUMIDOR RECLAMANTE', 34.2, 149.0, { size: 8.4, font: bold });
+      text('NOMBRE:', 34.2, 168.4, { size: 8.5, font: bold });
+      text('DNI / CE:', 34.2, 191.7, { size: 8.5, font: bold });
+      text('DOMICILIO:', 34.2, 215.7, { size: 8.5, font: bold });
+      text('TELÉFONO', 34.2, 237.5, { size: 8.3, font: bold });
+      text('E-MAIL:', 233.7, 237.5, { size: 8.3, font: bold });
+      text('SI ES MENOR DE EDAD, NOMBRE DEL PADRE, MADRE O APODERADO:', 34.2, 255.2, { size: 7.9, font: bold, maxWidth: 530 });
+      text('2. IDENTIFICACIÓN DEL BIEN CONTRATADO', 34.2, 293.0, { size: 8.4, font: bold });
+      text('PRODUCTO', 34.2, 310.3, { size: 8.4, font: bold });
+      text('MONTO RECLAMADO:', 201.5, 310.3, { size: 8.2, font: bold });
+      text('SERVICIO', 34.2, 328.8, { size: 8.4, font: bold });
+      text('DESCRIPCIÓN:', 201.5, 328.8, { size: 8.2, font: bold });
+      text('3. DETALLE DE LA RECLAMACIÓN Y PEDIDO DEL CONSUMIDOR', 34.2, 349.0, { size: 7.8, font: bold, maxWidth: 288 });
+      centerText('RECLAMO¹', 327.65, 349.0, 84.62, 8.2, bold);
+      centerText('QUEJA²', 454.39, 349.0, 77.67, 8.2, bold);
+      text('DETALLE:', 34.2, 373.5, { size: 8.7, font: bold });
+      text('PEDIDO:', 34.2, 493.4, { size: 8.7, font: bold });
+      centerText('FIRMA DEL CONSUMIDOR', 404.47, 566.0, 169.95, 8.1, bold);
+      text('4. OBSERVACIONES Y ACCIONES ADOPTADAS POR EL PROVEEDOR', 34.2, 589.7, { size: 8.15, font: bold, maxWidth: 520 });
+      text('FECHA DE COMUNICACIÓN DE LA RESPUESTA:', 34.2, 612.9, { size: 7.5, font: bold, maxWidth: 224 });
+      centerText('FIRMA DEL PROVEEDOR', 404.47, 700.0, 169.95, 8.1, bold);
+      text('¹ RECLAMO:', 32.2, 719.7, { size: 7.2, font: bold }); text('Disconformidad relacionada a los productos o servicios.', 80.5, 719.7, { size: 6.8, maxWidth: 210 });
+      text('² QUEJA:', 305.0, 719.7, { size: 7.2, font: bold }); wrappedText('Disconformidad no relacionada a los productos o servicios; o, malestar o descontento respecto a la atención al público.', 347.0, 719.1, 220, 17, 6.5);
+      text('HOJA DE RECLAMACIÓN VIRTUAL', 401.0, 745.0, { size: 9.4, font: bold, maxWidth: 167, align: 'right' });
+      text('* La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI.', 29.3, 762.0, { size: 6.5, maxWidth: 550, minSize: 5.5 });
+      text('* El proveedor debe dar respuesta al reclamo o queja en un plazo no mayor a quince (15) días hábiles, el cual es improrrogable.', 29.3, 771.0, { size: 6.5, maxWidth: 550, minSize: 5.5 });
+
+      const now = new Date();
+      const recordId = idField.value;
+      const suffix = (recordId.split('-').pop() || recordId).slice(0, 8);
+      text(formatPdfDate(now), 85.0, 91.5, { size: 8.6, maxWidth: 310 });
+      text(suffix, 426.0, 91.5, { size: 8.3, maxWidth: 78, align: 'center' });
+      text(String(now.getFullYear()), 518.0, 91.5, { size: 8.3, maxWidth: 49, align: 'center' });
+      text(document.getElementById('fullName').value.trim(), 115.0, 168.0, { size: 8.6, maxWidth: 450 });
+      text(document.getElementById('documentType').value + ' ' + document.getElementById('documentNumber').value.trim(), 115.0, 191.3, { size: 8.6, maxWidth: 450 });
+      text(document.getElementById('address').value.trim(), 115.0, 215.3, { size: 8.4, maxWidth: 450 });
+      text(document.getElementById('phone').value.trim(), 115.0, 237.2, { size: 8.2, maxWidth: 110 });
+      text(document.getElementById('email').value.trim(), 285.0, 237.2, { size: 8.0, maxWidth: 282, minSize: 6 });
+      if (minorSelect.value === 'Sí') text(guardianName.value.trim(), 34.2, 271.0, { size: 8.3, maxWidth: 532 });
+
+      const good = form.querySelector('input[name="Bien contratado"]:checked');
+      if (good && good.value === 'Producto') markX(174.5, 310.0, 12.0, 9.5);
+      if (good && good.value === 'Servicio') markX(174.5, 329.0, 12.0, 9.5);
+      const amountValue = document.getElementById('amount').value.trim();
+      if (amountValue) {
+        const amountNumber = Number(amountValue);
+        text(Number.isFinite(amountNumber) ? 'S/ ' + amountNumber.toFixed(2) : amountValue, 342.0, 310.2, { size: 8.3, maxWidth: 225 });
       }
+      text(document.getElementById('serviceDescription').value.trim(), 342.0, 328.7, { size: 8.0, maxWidth: 225, minSize: 5.8 });
+
+      const claimType = form.querySelector('input[name="Tipo de registro"]:checked');
+      if (claimType && claimType.value === 'Reclamo') markX(426.8, 350.2, 12.0, 9.5);
+      if (claimType && claimType.value === 'Queja') markX(546.4, 350.2, 12.0, 9.5);
+      wrappedText(document.getElementById('detail').value.trim(), 34.2, 390.0, 532, 86, 8.6);
+      wrappedText(document.getElementById('request').value.trim(), 34.2, 511.0, 360, 61, 8.6);
+
+      const signatureBytes = await dataUrlToPngBytes(currentSignatureDataUrl());
+      const signatureImage = await pdfDoc.embedPng(signatureBytes);
+      const maxSignatureWidth = 145;
+      const maxSignatureHeight = 56;
+      const signatureScale = Math.min(maxSignatureWidth / signatureImage.width, maxSignatureHeight / signatureImage.height);
+      const signatureWidth = signatureImage.width * signatureScale;
+      const signatureHeight = signatureImage.height * signatureScale;
+      page.drawImage(signatureImage, {
+        x: 404.47 + (169.95 - signatureWidth) / 2,
+        y: PAGE_H - 493.0 - signatureHeight,
+        width: signatureWidth,
+        height: signatureHeight
+      });
+
+      const bytes = await pdfDoc.save({ useObjectStreams: false });
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      if (!blob.size) throw new Error('El PDF generado está vacío');
+      if (blob.size > 9 * 1024 * 1024) throw new Error('El PDF supera el tamaño permitido');
+      if (localQaMode) document.documentElement.dataset.qaPdfBytes = String(blob.size);
+      return blob;
     };
 
     const downloadPdf = function (blob, name) {
@@ -523,7 +653,7 @@
       idDisplay.textContent = recordId;
       submitButton.disabled = true;
       form.setAttribute('aria-busy', 'true');
-      submitLabel.textContent = 'Generando PDF...';
+      submitLabel.textContent = 'Completando hoja original...';
       status.className = 'form-status';
       status.innerHTML = '';
       receipt.classList.remove('visible', 'pending');
@@ -532,14 +662,14 @@
       let registered = false;
 
       try {
-        lastPdfBlob = await createClaimPdf(lastPdfName);
+        lastPdfBlob = await createClaimPdf();
         submitLabel.textContent = 'Enviando reclamación...';
         const formData = new FormData(form);
         const email = document.getElementById('email').value.trim();
         formData.set('_subject', 'Libro de Reclamaciones ' + recordId + ' - Alimentos Marce');
         formData.set('_replyto', email);
         formData.set('_cc', email);
-        formData.set('_autoresponse', 'Hemos recibido tu Hoja de Reclamación ' + recordId + '. Alimentos Marce responderá dentro del plazo legal aplicable. La copia PDF también fue enviada al correo registrado.');
+        formData.set('_autoresponse', 'Hemos recibido tu Hoja de Reclamación ' + recordId + '. Alimentos Marce responderá dentro del plazo legal aplicable.');
         formData.set('Archivo PDF', lastPdfName);
         formData.append('attachment', new File([lastPdfBlob], lastPdfName, { type: 'application/pdf' }));
 
@@ -559,9 +689,9 @@
         }
         if (!sent) throw new Error('No se pudo confirmar el registro');
 
-        showStatus('success', '<strong>¡Reclamación registrada con éxito!</strong> El PDF completado fue enviado a Alimentos Marce y se remitió una copia al correo indicado.');
+        showStatus('success', '<strong>¡Reclamación registrada con éxito!</strong> La Hoja de Reclamación en su formato original, completada con los datos y la firma, fue adjuntada al envío.');
         receiptTitle.textContent = 'Hoja registrada correctamente';
-        receiptText.innerHTML = 'Tu número de registro es <strong>' + escapeHtml(recordId) + '</strong>. Guarda este número para futuras consultas.';
+        receiptText.innerHTML = 'Tu número de registro es <strong>' + escapeHtml(recordId) + '</strong>. Puedes descargar exactamente la misma copia PDF enviada a Alimentos Marce.';
         receipt.classList.add('visible');
         registered = true;
         submitLabel.textContent = 'RECLAMACIÓN REGISTRADA ✓';
@@ -570,10 +700,11 @@
           if (element.tagName !== 'BUTTON' && element.type !== 'hidden') element.disabled = true;
         });
       } catch (error) {
+        console.error('Libro de Reclamaciones:', error);
         showStatus('error', 'No pudimos completar el envío en este momento. Tus datos permanecen en el formulario para que vuelvas a intentarlo. También puedes <a class="mail-link" href="https://wa.me/51931515526" target="_blank" rel="noopener noreferrer">escribirnos por WhatsApp</a>.');
         if (lastPdfBlob) {
           receiptTitle.textContent = 'PDF generado · envío pendiente';
-          receiptText.textContent = 'Puedes descargar la copia, revisar tu conexión e intentar registrar la reclamación nuevamente.';
+          receiptText.textContent = 'La hoja original completada ya fue generada. Puedes descargarla, revisar tu conexión e intentar registrar la reclamación nuevamente.';
           receipt.classList.add('visible', 'pending');
         }
         submitButton.disabled = false;
