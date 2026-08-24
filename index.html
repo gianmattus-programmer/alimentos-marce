@@ -1037,47 +1037,188 @@ html, body {
         </div>
     </section>
 
-    <!-- 8. Galería Masonry -->
+    <!-- 8. Galería -->
     <section id="galeria" class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 reveal">
                 <h2 class="text-sm font-bold text-marce-orange uppercase tracking-widest mb-2">Nuestra Propuesta Gastronómica</h2>
                 <h3 class="text-4xl md:text-5xl font-serif text-marce-brown font-bold">Sabor y variedad en cada servicio</h3>
-                <p class="text-gray-600 text-lg font-light mt-4 max-w-3xl mx-auto">Una muestra de las preparaciones y servicios que forman parte de nuestra propuesta gastronómica.</p>
+                <p class="text-gray-600 text-lg font-light mt-4 max-w-3xl mx-auto">Conoce parte de nuestros servicios, preparaciones y experiencias de alimentación corporativa.</p>
             </div>
 
-            <!-- CSS Grid Masonry Look -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[200px] md:auto-rows-[250px] reveal">
-                <div class="md:col-span-2 md:row-span-2 relative group rounded-2xl overflow-hidden shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2069&auto=format&fit=crop" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Preparación gastronómica de Alimentos Marce" loading="lazy" decoding="async">
-                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <span class="text-white font-serif text-2xl font-bold">Menú Ejecutivo</span>
-                    </div>
-                </div>
-                
-                <div class="relative group rounded-2xl overflow-hidden shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Ensalada de la propuesta gastronómica de Alimentos Marce" loading="lazy" decoding="async">
-                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <span class="text-white font-serif text-xl font-bold">Línea Saludable</span>
-                    </div>
-                </div>
-                
-                <div class="relative group rounded-2xl overflow-hidden shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?q=80&w=2058&auto=format&fit=crop" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Bocaditos para catering corporativo y coffee break" loading="lazy" decoding="async">
-                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <span class="text-white font-serif text-xl font-bold">Coffee Break</span>
-                    </div>
-                </div>
-                
-                <div class="md:col-span-3 h-[200px] md:h-[300px] relative group rounded-2xl overflow-hidden shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Preparación de parrilla para alimentación corporativa" loading="lazy" decoding="async">
-                    <div class="absolute inset-0 bg-gradient-to-t from-marce-dark/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <span class="text-white font-serif text-2xl font-bold">Eventos Especiales y Almuerzos de Confraternidad</span>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 reveal" aria-label="Vista previa de la galería de Alimentos Marce">
+                <figure class="col-span-2 row-span-2 relative overflow-hidden rounded-2xl shadow-lg min-h-[360px] md:min-h-[520px]">
+                    <img src="galeria/galeria-12.avif" alt="Servicio de concesionario de alimentos de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
+                </figure>
+                <figure class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px]">
+                    <img src="galeria/galeria-28.avif" alt="Menú delivery de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
+                </figure>
+                <figure class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px]">
+                    <img src="galeria/galeria-13.avif" alt="Coffee break de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
+                </figure>
+                <figure class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px]">
+                    <img src="galeria/galeria-01.avif" alt="Preparación gastronómica de Alimentos Marce" class="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async">
+                </figure>
+                <button id="openGallery" type="button" class="relative overflow-hidden rounded-2xl shadow-lg min-h-[175px] md:min-h-[250px] group focus:outline-none focus-visible:ring-4 focus-visible:ring-marce-orange/40" aria-controls="galleryModal" aria-expanded="false" aria-label="Abrir galería completa de 31 imágenes">
+                    <img src="galeria/galeria-05.avif" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" loading="lazy" decoding="async">
+                    <span class="absolute inset-0 bg-marce-brown/70 group-hover:bg-marce-orange/80 transition-colors"></span>
+                    <span class="relative z-10 h-full min-h-[175px] md:min-h-[250px] flex flex-col items-center justify-center text-white">
+                        <span class="w-16 h-16 rounded-full border-2 border-white/80 flex items-center justify-center text-5xl font-light leading-none mb-3" aria-hidden="true">+</span>
+                        <span class="font-bold text-base md:text-lg">Ver todas</span>
+                        <span class="text-white/80 text-sm mt-1">31 imágenes</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div id="galleryModal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-labelledby="galleryModalTitle" aria-hidden="true">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" data-gallery-backdrop></div>
+            <div class="relative z-10 h-full w-full overflow-y-auto">
+                <div class="min-h-full px-4 py-6 sm:px-6 lg:px-10">
+                    <div class="max-w-7xl mx-auto bg-gray-50 rounded-3xl overflow-hidden shadow-2xl">
+                        <div class="sticky top-0 z-20 flex items-center justify-between gap-4 px-5 sm:px-8 py-4 bg-white/95 backdrop-blur-md border-b border-gray-100">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-marce-orange">Alimentos Marce</p>
+                                <h3 id="galleryModalTitle" class="text-xl sm:text-2xl font-serif font-bold text-marce-brown">Galería completa</h3>
+                            </div>
+                            <button id="closeGallery" type="button" class="w-11 h-11 rounded-full bg-marce-brown text-white flex items-center justify-center text-xl hover:bg-marce-orange transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-marce-orange/30" aria-label="Cerrar galería">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 lg:p-8">
+
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-01.avif" alt="Galería gastronómica de Alimentos Marce 1" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-02.avif" alt="Galería gastronómica de Alimentos Marce 2" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-03.avif" alt="Galería gastronómica de Alimentos Marce 3" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-04.avif" alt="Galería gastronómica de Alimentos Marce 4" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-05.avif" alt="Galería gastronómica de Alimentos Marce 5" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-06.avif" alt="Galería gastronómica de Alimentos Marce 6" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-07.avif" alt="Galería gastronómica de Alimentos Marce 7" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-08.avif" alt="Galería gastronómica de Alimentos Marce 8" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-09.avif" alt="Galería gastronómica de Alimentos Marce 9" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-10.avif" alt="Galería gastronómica de Alimentos Marce 10" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-11.avif" alt="Galería gastronómica de Alimentos Marce 11" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-12.avif" alt="Servicio de concesionario de alimentos de Alimentos Marce" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-13.avif" alt="Coffee break de Alimentos Marce" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-14.avif" alt="Galería gastronómica de Alimentos Marce 14" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-15.avif" alt="Galería gastronómica de Alimentos Marce 15" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-16.avif" alt="Galería gastronómica de Alimentos Marce 16" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-17.avif" alt="Galería gastronómica de Alimentos Marce 17" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-18.avif" alt="Galería gastronómica de Alimentos Marce 18" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-19.avif" alt="Galería gastronómica de Alimentos Marce 19" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-20.avif" alt="Galería gastronómica de Alimentos Marce 20" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-21.avif" alt="Galería gastronómica de Alimentos Marce 21" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-22.avif" alt="Galería gastronómica de Alimentos Marce 22" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-23.avif" alt="Galería gastronómica de Alimentos Marce 23" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-24.avif" alt="Galería gastronómica de Alimentos Marce 24" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-25.avif" alt="Galería gastronómica de Alimentos Marce 25" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-26.avif" alt="Galería gastronómica de Alimentos Marce 26" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-27.avif" alt="Galería gastronómica de Alimentos Marce 27" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-28.avif" alt="Menú delivery de Alimentos Marce" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-29.avif" alt="Galería gastronómica de Alimentos Marce 29" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-30.avif" alt="Galería gastronómica de Alimentos Marce 30" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        <figure class="group overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="galeria/galeria-31.avif" alt="Galería gastronómica de Alimentos Marce 31" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                        </figure>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+    (function () {
+        const openGalleryButton = document.getElementById('openGallery');
+        const galleryModal = document.getElementById('galleryModal');
+        const closeGalleryButton = document.getElementById('closeGallery');
+        const galleryBackdrop = galleryModal ? galleryModal.querySelector('[data-gallery-backdrop]') : null;
+        if (!openGalleryButton || !galleryModal || !closeGalleryButton || !galleryBackdrop) return;
+
+        const openGallery = function () {
+            galleryModal.classList.remove('hidden');
+            galleryModal.setAttribute('aria-hidden', 'false');
+            openGalleryButton.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+            closeGalleryButton.focus();
+        };
+
+        const closeGallery = function () {
+            galleryModal.classList.add('hidden');
+            galleryModal.setAttribute('aria-hidden', 'true');
+            openGalleryButton.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            openGalleryButton.focus();
+        };
+
+        openGalleryButton.addEventListener('click', openGallery);
+        closeGalleryButton.addEventListener('click', closeGallery);
+        galleryBackdrop.addEventListener('click', closeGallery);
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !galleryModal.classList.contains('hidden')) closeGallery();
+        });
+    })();
+    </script>
 
     <!-- 10. Sección Contacto -->
     <section id="contacto" class="relative bg-white">
