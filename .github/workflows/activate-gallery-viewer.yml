@@ -1,0 +1,33 @@
+name: Activar visor interactivo de galería
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Activar visor de imágenes
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          tag = '    <script src="gallery-viewer.js?v=1"></script>\n'
+          if 'gallery-viewer.js' not in s:
+              s = s.replace('</body>', tag + '</body>')
+              p.write_text(s, encoding='utf-8')
+          PY
+          rm -f .github/workflows/activate-gallery-viewer.yml
+      - name: Guardar cambio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/activate-gallery-viewer.yml
+          git commit -m "Activar visor interactivo de galería" || exit 0
+          git push
