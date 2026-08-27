@@ -31,10 +31,10 @@
   ];
 
   const PREVIEW = [
-    { src: 'galeria/galeria-01.avif', label: 'Menú Ejecutivo' },
-    { src: 'galeria/galeria-07.avif', label: 'Línea Saludable' },
-    { src: 'galeria/galeria-11.avif', label: 'Coffee Break' },
-    { src: 'galeria/galeria-30.avif', label: 'Eventos Especiales y Almuerzos de Confraternidad' }
+    { src: 'galeria/galeria-02.avif', label: 'Servicio de Alimentación' },
+    { src: 'galeria/galeria-28.avif', label: 'Almuerzo Corporativo' },
+    { src: 'galeria/galeria-22.avif', label: 'Coffee Break' },
+    { src: 'galeria/galeria-18.avif', label: 'Menús Especiales' }
   ];
 
   const normalize = (value) => String(value || '').split('?')[0].replace(/^.*?(galeria\/)/, '$1');
