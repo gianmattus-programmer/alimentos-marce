@@ -2,42 +2,56 @@
   'use strict';
 
   const ITEMS = [
-    { src: 'galeria/galeria-01.avif', caption: 'Un menú servido con equilibrio, sabor y una presentación cuidada para cada jornada.' },
-    { src: 'galeria/galeria-02.avif', caption: 'Coordinamos cada plato para que el servicio sea ordenado, uniforme y listo a tiempo.' },
-    { src: 'galeria/galeria-03.avif', caption: 'Un toque dulce para cerrar el servicio y acompañar celebraciones especiales.' },
-    { src: 'galeria/galeria-04.avif', caption: 'Montajes pensados para compartir, conversar y disfrutar en equipo.' },
-    { src: 'galeria/galeria-06.avif', caption: 'Menús completos que combinan variedad, porción y una presentación práctica.' },
-    { src: 'galeria/galeria-07.avif', caption: 'Opciones frescas y coloridas que suman variedad a la propuesta gastronómica.' },
-    { src: 'galeria/galeria-08.avif', caption: 'Bocaditos preparados para reuniones donde cada detalle suma.' },
-    { src: 'galeria/galeria-09.avif', caption: 'Variedad de sabores y texturas para compartir en pausas, reuniones y celebraciones.' },
-    { src: 'galeria/galeria-11.avif', caption: 'Presentaciones que se adaptan al estilo y la ocasión de cada evento.' },
-    { src: 'galeria/galeria-14.avif', caption: 'Preparación cuidadosa y ordenada en cada etapa antes de llegar a la mesa.' },
-    { src: 'galeria/galeria-15.avif', caption: 'Sabores caseros y porciones completas para una alimentación reconfortante.' },
-    { src: 'galeria/galeria-16.avif', caption: 'También acompañamos fechas especiales con detalles preparados para celebrar.' },
-    { src: 'galeria/galeria-17.avif', caption: 'Variedad de postres para terminar cada servicio con un toque dulce.' },
-    { src: 'galeria/galeria-18.avif', caption: 'Sabores peruanos presentados con dedicación y personalidad.' },
-    { src: 'galeria/galeria-19.avif', caption: 'Bebidas y acompañamientos listos para recibir a tus invitados.' },
-    { src: 'galeria/galeria-20.avif', caption: 'Preparaciones abundantes y sabrosas para almuerzos que reúnen al equipo.' },
-    { src: 'galeria/galeria-21.avif', caption: 'Platos servidos con equilibrio entre sabor, presentación y variedad.' },
-    { src: 'galeria/galeria-22.avif', caption: 'Estaciones de bebidas prácticas y ordenadas para reuniones corporativas.' },
-    { src: 'galeria/galeria-23.avif', caption: 'Bocaditos frescos y variados para compartir de forma práctica.' },
-    { src: 'galeria/galeria-24.avif', caption: 'Nuestro equipo prepara cada ración con cuidado y atención al detalle.' },
-    { src: 'galeria/galeria-25.avif', caption: 'Bocaditos listos para servir, preparados con orden y dedicación.' },
-    { src: 'galeria/galeria-27.avif', caption: 'La organización previa permite que cada servicio fluya de forma eficiente.' },
-    { src: 'galeria/galeria-28.avif', caption: 'Menús porcionados y listos para una entrega práctica y organizada.' },
-    { src: 'galeria/galeria-29.avif', caption: 'Una propuesta completa que combina frescura, sabor y variedad.' },
-    { src: 'galeria/galeria-30.avif', caption: 'Mesas dulces que aportan un detalle especial a encuentros y celebraciones.' },
-    { src: 'galeria/galeria-31.avif', caption: 'Atención cercana y una presentación preparada para recibir a cada invitado.' }
+    { mobile: 'galeria/mobile/galeria-01.avif', desktop: 'galeria/desktop/galeria-01.avif', caption: 'Un menú servido con equilibrio, sabor y una presentación cuidada para cada jornada.' },
+    { mobile: 'galeria/mobile/galeria-02.avif', desktop: 'galeria/desktop/galeria-02.avif', caption: 'Coordinamos cada plato para que el servicio sea ordenado, uniforme y listo a tiempo.' },
+    { mobile: 'galeria/mobile/galeria-03.avif', desktop: 'galeria/desktop/galeria-03.avif', caption: 'Un toque dulce para cerrar el servicio y acompañar celebraciones especiales.' },
+    { mobile: 'galeria/mobile/galeria-04.avif', desktop: 'galeria/desktop/galeria-04.avif', caption: 'Montajes pensados para compartir, conversar y disfrutar en equipo.' },
+    { mobile: 'galeria/mobile/galeria-06.avif', desktop: 'galeria/desktop/galeria-06.avif', caption: 'Menús completos que combinan variedad, porción y una presentación práctica.' },
+    { mobile: 'galeria/mobile/galeria-07.avif', desktop: 'galeria/desktop/galeria-07.avif', caption: 'Opciones frescas y coloridas que suman variedad a la propuesta gastronómica.' },
+    { mobile: 'galeria/mobile/galeria-08.avif', desktop: 'galeria/desktop/galeria-08.avif', caption: 'Bocaditos preparados para reuniones donde cada detalle suma.' },
+    { mobile: 'galeria/mobile/galeria-09.avif', desktop: 'galeria/desktop/galeria-09.avif', caption: 'Variedad de sabores y texturas para compartir en pausas, reuniones y celebraciones.' },
+    { mobile: 'galeria/mobile/galeria-11.avif', desktop: 'galeria/desktop/galeria-11.avif', caption: 'Presentaciones que se adaptan al estilo y la ocasión de cada evento.' },
+    { mobile: 'galeria/mobile/galeria-14.avif', desktop: 'galeria/desktop/galeria-14.avif', caption: 'Preparación cuidadosa y ordenada en cada etapa antes de llegar a la mesa.' },
+    { mobile: 'galeria/mobile/galeria-15.avif', desktop: 'galeria/desktop/galeria-15.avif', caption: 'Sabores caseros y porciones completas para una alimentación reconfortante.' },
+    { mobile: 'galeria/mobile/galeria-16.avif', desktop: 'galeria/desktop/galeria-16.avif', caption: 'También acompañamos fechas especiales con detalles preparados para celebrar.' },
+    { mobile: 'galeria/mobile/galeria-17.avif', desktop: 'galeria/desktop/galeria-17.avif', caption: 'Variedad de postres para terminar cada servicio con un toque dulce.' },
+    { mobile: 'galeria/mobile/galeria-18.avif', desktop: 'galeria/desktop/galeria-18.avif', caption: 'Sabores peruanos presentados con dedicación y personalidad.' },
+    { mobile: 'galeria/mobile/galeria-19.avif', desktop: 'galeria/desktop/galeria-19.avif', caption: 'Bebidas y acompañamientos listos para recibir a tus invitados.' },
+    { mobile: 'galeria/mobile/galeria-20.avif', desktop: 'galeria/desktop/galeria-20.avif', caption: 'Preparaciones abundantes y sabrosas para almuerzos que reúnen al equipo.' },
+    { mobile: 'galeria/mobile/galeria-21.avif', desktop: 'galeria/desktop/galeria-21.avif', caption: 'Platos servidos con equilibrio entre sabor, presentación y variedad.' },
+    { mobile: 'galeria/mobile/galeria-22.avif', desktop: 'galeria/desktop/galeria-22.avif', caption: 'Estaciones de bebidas prácticas y ordenadas para reuniones corporativas.' },
+    { mobile: 'galeria/mobile/galeria-23.avif', desktop: 'galeria/desktop/galeria-23.avif', caption: 'Bocaditos frescos y variados para compartir de forma práctica.' },
+    { mobile: 'galeria/mobile/galeria-24.avif', desktop: 'galeria/desktop/galeria-24.avif', caption: 'Nuestro equipo prepara cada ración con cuidado y atención al detalle.' },
+    { mobile: 'galeria/mobile/galeria-25.avif', desktop: 'galeria/desktop/galeria-25.avif', caption: 'Bocaditos listos para servir, preparados con orden y dedicación.' },
+    { mobile: 'galeria/mobile/galeria-27.avif', desktop: 'galeria/desktop/galeria-27.avif', caption: 'La organización previa permite que cada servicio fluya de forma eficiente.' },
+    { mobile: 'galeria/mobile/galeria-28.avif', desktop: 'galeria/desktop/galeria-28.avif', caption: 'Menús porcionados y listos para una entrega práctica y organizada.' },
+    { mobile: 'galeria/mobile/galeria-29.avif', desktop: 'galeria/desktop/galeria-29.avif', caption: 'Una propuesta completa que combina frescura, sabor y variedad.' },
+    { mobile: 'galeria/mobile/galeria-30.avif', desktop: 'galeria/desktop/galeria-30.avif', caption: 'Mesas dulces que aportan un detalle especial a encuentros y celebraciones.' },
+    { mobile: 'galeria/mobile/galeria-31.avif', desktop: 'galeria/desktop/galeria-31.avif', caption: 'Atención cercana y una presentación preparada para recibir a cada invitado.' }
   ];
 
   const PREVIEW = [
-    { src: 'galeria/galeria-02.avif', label: 'Servicio de Alimentación' },
-    { src: 'galeria/galeria-28.avif', label: 'Almuerzo Corporativo' },
-    { src: 'galeria/galeria-22.avif', label: 'Coffee Break' },
-    { src: 'galeria/galeria-18.avif', label: 'Menús Especiales' }
+    { mobile: 'galeria/mobile/galeria-02.avif', desktop: 'galeria/desktop/galeria-02.avif', label: 'Servicio de Alimentación' },
+    { mobile: 'galeria/mobile/galeria-28.avif', desktop: 'galeria/desktop/galeria-28.avif', label: 'Almuerzo Corporativo' },
+    { mobile: 'galeria/mobile/galeria-22.avif', desktop: 'galeria/desktop/galeria-22.avif', label: 'Coffee Break' },
+    { mobile: 'galeria/mobile/galeria-18.avif', desktop: 'galeria/desktop/galeria-18.avif', label: 'Menús Especiales' }
   ];
 
-  const normalize = (value) => String(value || '').split('?')[0].replace(/^.*?(galeria\/)/, '$1');
+  const desktopMedia = window.matchMedia('(min-width: 768px)');
+  const sourceFor = (item) => desktopMedia.matches ? item.desktop : item.mobile;
+
+  function applyResponsiveSource(img, item) {
+    if (!img || !item) return;
+    img.dataset.marceMobile = item.mobile;
+    img.dataset.marceDesktop = item.desktop;
+    img.src = sourceFor(item);
+  }
+
+  function refreshResponsiveImages() {
+    document.querySelectorAll('img[data-marce-mobile][data-marce-desktop]').forEach((img) => {
+      img.src = desktopMedia.matches ? img.dataset.marceDesktop : img.dataset.marceMobile;
+    });
+  }
 
   function init() {
     const gallerySection = document.getElementById('galeria');
@@ -63,17 +77,16 @@
       viewerCounter.textContent = `${currentIndex + 1} / ${ITEMS.length}`;
       viewerImage.onload = () => viewer.classList.remove('is-loading');
       viewerImage.onerror = () => viewer.classList.remove('is-loading');
-      viewerImage.src = item.src;
+      viewerImage.src = sourceFor(item);
 
       const next = new Image();
-      next.src = ITEMS[(currentIndex + 1) % ITEMS.length].src;
+      next.src = sourceFor(ITEMS[(currentIndex + 1) % ITEMS.length]);
       const prev = new Image();
-      prev.src = ITEMS[(currentIndex - 1 + ITEMS.length) % ITEMS.length].src;
+      prev.src = sourceFor(ITEMS[(currentIndex - 1 + ITEMS.length) % ITEMS.length]);
     }
 
-    function openViewer(src, trigger) {
-      const index = ITEMS.findIndex((item) => normalize(item.src) === normalize(src));
-      if (index < 0) return;
+    function openViewer(index, trigger) {
+      if (!Number.isInteger(index) || index < 0 || index >= ITEMS.length) return;
       lastTrigger = trigger || document.activeElement;
       render(index);
       viewer.hidden = false;
@@ -122,6 +135,13 @@
       if (event.key === 'ArrowRight') render(currentIndex + 1);
     });
 
+    const handleSourceChange = () => {
+      refreshResponsiveImages();
+      if (!viewer.hidden) render(currentIndex);
+    };
+    if (desktopMedia.addEventListener) desktopMedia.addEventListener('change', handleSourceChange);
+    else if (desktopMedia.addListener) desktopMedia.addListener(handleSourceChange);
+
     rebuildModalGrid(galleryModal, openViewer);
     updatePreview(gallerySection, openViewer);
     updateCount(gallerySection, galleryModal);
@@ -140,7 +160,7 @@
       button.className = 'block w-full h-full text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-marce-orange/40 rounded-2xl';
       button.setAttribute('aria-label', `Abrir imagen ${index + 1} de ${ITEMS.length}: ${item.caption}`);
       const img = document.createElement('img');
-      img.src = item.src;
+      applyResponsiveSource(img, item);
       img.alt = item.caption;
       img.className = 'aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105';
       img.loading = 'lazy';
@@ -148,7 +168,7 @@
       button.appendChild(img);
       figure.appendChild(button);
       grid.appendChild(figure);
-      button.addEventListener('click', () => openViewer(item.src, button));
+      button.addEventListener('click', () => openViewer(index, button));
     });
   }
 
@@ -163,14 +183,15 @@
       if (!item) return;
       const img = card.querySelector('img');
       const label = card.querySelector('span.text-white');
-      img.src = item.src;
+      applyResponsiveSource(img, item);
       img.alt = item.label + ' - Alimentos Marce';
       if (label) label.textContent = item.label;
       card.classList.add('marce-preview-clickable');
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
       card.setAttribute('aria-label', `Ver ${item.label} en grande`);
-      const launch = () => openViewer(item.src, card);
+      const galleryIndex = ITEMS.findIndex((galleryItem) => galleryItem.mobile === item.mobile);
+      const launch = () => openViewer(galleryIndex, card);
       card.addEventListener('click', launch);
       card.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -183,7 +204,7 @@
     const openAll = document.getElementById('openGallery');
     if (openAll) {
       const bg = openAll.querySelector('img');
-      if (bg) bg.src = 'galeria/galeria-08.avif';
+      if (bg) applyResponsiveSource(bg, { mobile: 'galeria/mobile/galeria-08.avif', desktop: 'galeria/desktop/galeria-08.avif' });
       openAll.setAttribute('aria-label', `Abrir galería completa de ${ITEMS.length} imágenes`);
     }
   }
@@ -236,7 +257,7 @@
       .marce-viewer { position: fixed; inset: 0; z-index: 140; display: grid; place-items: center; padding: 18px; opacity: 0; transition: opacity .18s ease; }
       .marce-viewer.is-open { opacity: 1; }
       .marce-viewer-backdrop { position: absolute; inset: 0; background: rgba(12, 6, 2, .94); backdrop-filter: blur(8px); }
-      .marce-viewer-dialog { position: relative; z-index: 1; width: min(94vw, 1500px); max-height: 94dvh; display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; grid-template-rows: minmax(0, 1fr) auto; align-items: center; gap: 0; }
+      .marce-viewer-dialog { position: relative; z-index: 1; width: min(94vw, 1152px); max-height: 94dvh; display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; grid-template-rows: minmax(0, 1fr) auto; align-items: center; gap: 0; }
       .marce-viewer-stage { grid-column: 2; grid-row: 1; min-height: 0; height: min(76dvh, 920px); display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 18px 18px 0 0; background: #0b0907; }
       .marce-viewer-stage img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: auto; transition: opacity .15s ease, transform .2s ease; }
       .marce-viewer.is-loading .marce-viewer-stage img { opacity: .35; transform: scale(.995); }
