@@ -17,11 +17,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p galeria/mobile galeria/desktop
-
           for n in 01 02 03 04 06 07 08 09 11 14 15 16 17 18 19 20 21 22 23 24 25 27 28 29 30 31; do
             cp "galeria/galeria-${n}.avif" "galeria/mobile/galeria-${n}.avif"
           done
-
           curl -fsSL --retry 3 'https://cdn.shopify.com/s/files/1/0744/6305/1865/files/marce-gallery-desktop-01.avif?v=1787791826' -o galeria/desktop/galeria-01.avif
           curl -fsSL --retry 3 'https://cdn.shopify.com/s/files/1/0744/6305/1865/files/marce-gallery-desktop-02.avif?v=1787791838' -o galeria/desktop/galeria-02.avif
           curl -fsSL --retry 3 'https://cdn.shopify.com/s/files/1/0744/6305/1865/files/marce-gallery-desktop-03.avif?v=1787791847' -o galeria/desktop/galeria-03.avif
@@ -48,94 +46,13 @@ jobs:
           curl -fsSL --retry 3 'https://cdn.shopify.com/s/files/1/0744/6305/1865/files/marce-gallery-desktop-29.avif?v=1787792063' -o galeria/desktop/galeria-29.avif
           curl -fsSL --retry 3 'https://cdn.shopify.com/s/files/1/0744/6305/1865/files/marce-gallery-desktop-30.avif?v=1787792073' -o galeria/desktop/galeria-30.avif
           curl -fsSL --retry 3 'https://cdn.shopify.com/s/files/1/0744/6305/1865/files/marce-gallery-desktop-31.avif?v=1787792084' -o galeria/desktop/galeria-31.avif
-
-          python <<'PY'
-          from pathlib import Path
-          import re
-
-          p = Path('gallery-viewer.js')
-          s = p.read_text(encoding='utf-8')
-
-          s = re.sub(
-              r"\{ src: 'galeria/galeria-(\d{2})\.avif', caption:",
-              r"{ mobile: 'galeria/mobile/galeria-\1.avif', desktop: 'galeria/desktop/galeria-\1.avif', caption:",
-              s,
-          )
-          s = re.sub(
-              r"\{ src: 'galeria/galeria-(\d{2})\.avif', label:",
-              r"{ mobile: 'galeria/mobile/galeria-\1.avif', desktop: 'galeria/desktop/galeria-\1.avif', label:",
-              s,
-          )
-
-          old_normalize = "  const normalize = (value) => String(value || '').split('?')[0].replace(/^.*?(galeria\\/)/, '$1');"
-          responsive = """  const desktopMedia = window.matchMedia('(min-width: 768px)');
-          const sourceFor = (item) => desktopMedia.matches ? item.desktop : item.mobile;
-
-          function applyResponsiveSource(img, item) {
-            if (!img || !item) return;
-            img.dataset.marceMobile = item.mobile;
-            img.dataset.marceDesktop = item.desktop;
-            img.src = sourceFor(item);
-          }
-
-          function refreshResponsiveImages() {
-            document.querySelectorAll('img[data-marce-mobile][data-marce-desktop]').forEach((img) => {
-              img.src = desktopMedia.matches ? img.dataset.marceDesktop : img.dataset.marceMobile;
-            });
-          }"""
-          if old_normalize in s:
-              s = s.replace(old_normalize, responsive)
-
-          s = s.replace('viewerImage.src = item.src;', 'viewerImage.src = sourceFor(item);')
-          s = s.replace('next.src = ITEMS[(currentIndex + 1) % ITEMS.length].src;', 'next.src = sourceFor(ITEMS[(currentIndex + 1) % ITEMS.length]);')
-          s = s.replace('prev.src = ITEMS[(currentIndex - 1 + ITEMS.length) % ITEMS.length].src;', 'prev.src = sourceFor(ITEMS[(currentIndex - 1 + ITEMS.length) % ITEMS.length]);')
-
-          old_open = """    function openViewer(src, trigger) {
-              const index = ITEMS.findIndex((item) => normalize(item.src) === normalize(src));
-              if (index < 0) return;"""
-          s = s.replace(old_open, """    function openViewer(index, trigger) {
-              if (!Number.isInteger(index) || index < 0 || index >= ITEMS.length) return;""")
-
-          s = s.replace("img.src = item.src;\n      img.alt = item.caption;", "applyResponsiveSource(img, item);\n      img.alt = item.caption;")
-          s = s.replace("button.addEventListener('click', () => openViewer(item.src, button));", "button.addEventListener('click', () => openViewer(index, button));")
-
-          s = s.replace("img.src = item.src;\n      img.alt = item.label + ' - Alimentos Marce';", "applyResponsiveSource(img, item);\n      img.alt = item.label + ' - Alimentos Marce';")
-          s = s.replace("const launch = () => openViewer(item.src, card);", "const galleryIndex = ITEMS.findIndex((galleryItem) => galleryItem.mobile === item.mobile);\n      const launch = () => openViewer(galleryIndex, card);")
-
-          s = s.replace("if (bg) bg.src = 'galeria/galeria-08.avif';", "if (bg) applyResponsiveSource(bg, { mobile: 'galeria/mobile/galeria-08.avif', desktop: 'galeria/desktop/galeria-08.avif' });")
-
-          marker = """    document.addEventListener('keydown', (event) => {
-          if (viewer.hidden) return;
-          if (event.key === 'Escape') closeViewer();
-          if (event.key === 'ArrowLeft') render(currentIndex - 1);
-          if (event.key === 'ArrowRight') render(currentIndex + 1);
-        });"""
-          replacement = marker + """
-
-        const handleSourceChange = () => {
-          refreshResponsiveImages();
-          if (!viewer.hidden) render(currentIndex);
-        };
-        if (desktopMedia.addEventListener) desktopMedia.addEventListener('change', handleSourceChange);
-        else if (desktopMedia.addListener) desktopMedia.addListener(handleSourceChange);"""
-          s = s.replace(marker, replacement)
-
-          s = s.replace('width: min(94vw, 1500px);', 'width: min(94vw, 1152px);')
-
-          if "galeria/galeria-" in s:
-              remaining = [line for line in s.splitlines() if "galeria/galeria-" in line]
-              if remaining:
-                  raise SystemExit('Quedaron rutas antiguas en gallery-viewer.js: ' + ' | '.join(remaining[:5]))
-
-          p.write_text(s, encoding='utf-8')
-          PY
-
-          rm -f .github/workflows/build-responsive-gallery.yml
+          python gallery-responsive-build.py
+          rm -f gallery-responsive-build.py .github/workflows/build-responsive-gallery.yml
 
       - name: Guardar galería responsive
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add galeria/mobile galeria/desktop gallery-viewer.js .github/workflows/build-responsive-gallery.yml
+          git add galeria/mobile galeria/desktop gallery-viewer.js gallery-responsive-build.py .github/workflows/build-responsive-gallery.yml
           git commit -m "Separar imágenes de galería para desktop y mobile" || exit 0
           git push
